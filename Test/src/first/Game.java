@@ -3,8 +3,12 @@ package first;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -22,7 +26,7 @@ import javax.swing.JPanel;
 
 public class Game extends JFrame{
 	
-	int size;
+	static int size;
 	int score;
 	int hiscore;
 	JPanel menu,pan;
@@ -31,20 +35,19 @@ public class Game extends JFrame{
 	JButton[] menuButton = new JButton[3];
 	ImageIcon[] imgIcon = new ImageIcon[3];
 	String[] imgPath = {"\\PICTURE\\home.jpg","\\PICTURE\\back.jpg","\\PICTURE\\restart.jpg"};
-	RoundedButton[][] button;
 	int initCnt = 2;
 	int endCnt = 0;
 	boolean endFlag = false;
 	int[] randNum = new int[2];
 	
-	int[][] table;
-	int[][] imsi;
+	static Tile[][] table;
+	Tile[][] imsi;
 	int imsiScore;
 	
 	public void copyTable() {
 		for (int i = 0; i < table.length; i++) {
 			for (int j = 0; j < table[0].length; j++) {
-				imsi[i][j] = table[i][j];
+				imsi[i][j].value = table[i][j].value;
 			}
 		}
 	}
@@ -52,11 +55,10 @@ public class Game extends JFrame{
 	public void backDrawTableButton() {
 		for (int i = 0; i < table.length; i++) {
 			for (int j = 0; j < table[0].length; j++) {
-				table[i][j] = imsi[i][j];
+				table[i][j].value = imsi[i][j].value;
 			}
 		}
 		score = imsiScore;
-		drawButton();
 		writeScore();
 	}
 	
@@ -71,53 +73,37 @@ public class Game extends JFrame{
 		label[1].setText(labelText[1] + score);
 	}
 	
-	public void drawButton() {
-		//cleanButton
-		for (int i = 0; i < button.length; i++) {
-			for (int j = 0; j < button[0].length; j++) {
-				button[i][j].setText("");
-			}
-		}
-		
-		//drawButton
-		for (int i = 0; i < button.length; i++) {
-			for (int j = 0; j < button[0].length; j++) {
-				if(table[i][j] != 0)
-				button[i][j].setText(table[i][j]+"");
-			}
-		}
-	}
 	
 	public void moveDown() {
-		for (int i = button.length-1; i > 0; i--) {
-			for (int j = 0; j < button[0].length; j++) {
-				if(table[i][j] == 0) continue;
+		for (int i = table.length-1; i > 0; i--) {
+			for (int j = 0; j < table[0].length; j++) {
+				if(table[i][j].value == 0) continue;
 				if(i > 0) {
 					if(table[i][j] == table[i-1][j]) {
-						table[i][j] += table[i-1][j]; 
-						score += table[i][j];
-						table[i-1][j] = 0;
+						table[i][j].value += table[i-1][j].value; 
+						score += table[i][j].value;
+						table[i-1][j].value = 0;
 					}
-					if(table[i][j] == 0) {
-						table[i][j] = table[i-1][j];
-						table[i-1][j]= 0;
+					if(table[i][j].value == 0) {
+						table[i][j].value = table[i-1][j].value;
+						table[i-1][j].value= 0;
 					}
 				}
 			}
 		}
 		for(int k = 0; k < size; k++) {
-			for (int i = 0; i < button.length; i++) {
-				for (int j = 0; j < button[0].length; j++) {
-					if(table[i][j] == 0) continue;
-					if(i < button.length-1) {
-						if(table[i+1][j] == 0) {
-							table[i+1][j] = table[i][j];
-							table[i][j]= 0;
+			for (int i = 0; i < table.length; i++) {
+				for (int j = 0; j < table[0].length; j++) {
+					if(table[i][j].value == 0) continue;
+					if(i < table.length-1) {
+						if(table[i+1][j].value == 0) {
+							table[i+1][j].value = table[i][j].value;
+							table[i][j].value= 0;
 						}
-						if(table[i+1][j] == table[i][j]) {
-							table[i+1][j] += table[i][j];
-							score += table[i+1][j];
-							table[i][j]=0;
+						if(table[i+1][j].value == table[i][j].value) {
+							table[i+1][j].value += table[i][j].value;
+							score += table[i+1][j].value;
+							table[i][j].value=0;
 						}
 					}
 				}
@@ -126,35 +112,35 @@ public class Game extends JFrame{
 	}
 	
 	public void moveUp() {
-		for (int i = 0; i < button.length; i++) {
-			for (int j = 0; j < button[0].length; j++) {
-				if(table[i][j] == 0) continue;
-				if(i < button.length-2) {
+		for (int i = 0; i < table.length; i++) {
+			for (int j = 0; j < table[0].length; j++) {
+				if(table[i][j].value == 0) continue;
+				if(i < table.length-2) {
 					if(table[i][j] == table[i+1][j]) {
-					table[i][j] += table[i+1][j]; 
-					score += table[i][j];
-					table[i+1][j] = 0;
+					table[i][j].value += table[i+1][j].value; 
+					score += table[i][j].value;
+					table[i+1][j].value = 0;
 					}
-					if(table[i][j] == 0) {
-						table[i][j] = table[i+1][j];
-						table[i+1][j] = 0;
+					if(table[i][j].value == 0) {
+						table[i][j].value = table[i+1][j].value;
+						table[i+1][j].value = 0;
 					}
 				}
 			}
 		}
 		for(int k = 0 ; k < size; k++) {
-			for (int i = button.length-1; i > 0; i--) {
-				for (int j = 0; j < button[0].length; j++) {
-					if(table[i][j] == 0) continue;
+			for (int i = table.length-1; i > 0; i--) {
+				for (int j = 0; j < table[0].length; j++) {
+					if(table[i][j].value == 0) continue;
 					if(i > 0) {
-						if(table[i-1][j] == 0) {
-							table[i-1][j] = table[i][j];
-							table[i][j] = 0;
+						if(table[i-1][j].value == 0) {
+							table[i-1][j].value = table[i][j].value;
+							table[i][j].value = 0;
 						}
-						if(table[i-1][j] == table[i][j]) {
-							table[i-1][j] += table[i][j];
-							score += table[i-1][j];
-							table[i][j] = 0;
+						if(table[i-1][j].value == table[i][j].value) {
+							table[i-1][j].value += table[i][j].value;
+							score += table[i-1][j].value;
+							table[i][j].value = 0;
 						}
 					}
 				}
@@ -163,35 +149,35 @@ public class Game extends JFrame{
 	}
 	
 	public void moveLeft() {
-		for (int i = 0; i < button.length; i++) {
-			for (int j = 0; j < button[0].length; j++) {
-				if(table[i][j] == 0) continue;
-				if(j < button[0].length-1) {
-					if(table[i][j] == table[i][j+1]) {
-						table[i][j] += table[i][j+1]; 
-						score += table[i][j];
-						table[i][j+1] = 0;
+		for (int i = 0; i < table.length; i++) {
+			for (int j = 0; j < table[0].length; j++) {
+				if(table[i][j].value == 0) continue;
+				if(j < table[0].length-1) {
+					if(table[i][j].value == table[i][j+1].value) {
+						table[i][j].value += table[i][j+1].value; 
+						score += table[i][j].value;
+						table[i][j+1].value = 0;
 					}
-					if(table[i][j] == 0) {
-						table[i][j] = table[i][j+1];
-						table[i][j+1]= 0;
+					if(table[i][j].value == 0) {
+						table[i][j].value = table[i][j+1].value;
+						table[i][j+1].value= 0;
 					}
 				}
 			}
 		}
 		for(int k = 0; k < size; k++) {
-			for (int i = 0; i < button.length; i++) {
-				for (int j = button[i].length-1; j > 0; j--) {
-					if(table[i][j] == 0) continue;
+			for (int i = 0; i < table.length; i++) {
+				for (int j = table[i].length-1; j > 0; j--) {
+					if(table[i][j].value == 0) continue;
 					if(j > 0) {
-						if(table[i][j-1] == 0) {
-							table[i][j-1] = table[i][j];
-							table[i][j]= 0;
+						if(table[i][j-1].value == 0) {
+							table[i][j-1].value = table[i][j].value;
+							table[i][j].value= 0;
 						}
-						if(table[i][j-1] == table[i][j]) {
-							table[i][j-1] += table[i][j];
-							score += table[i][j-1];
-							table[i][j] = 0;
+						if(table[i][j-1].value == table[i][j].value) {
+							table[i][j-1].value += table[i][j].value;
+							score += table[i][j-1].value ;
+							table[i][j].value = 0;
 						}
 					}
 				}
@@ -200,35 +186,35 @@ public class Game extends JFrame{
 	}
 	
 	public void moveRight() {
-		for (int i = 0; i < button.length; i++) {
-			for (int j = button[0].length-1; j > 0; j--) {
-				if(table[i][j] == 0) continue;
+		for (int i = 0; i < table.length; i++) {
+			for (int j = table[0].length-1; j > 0; j--) {
+				if(table[i][j].value == 0) continue;
 				if(j > 0) {
-					if(table[i][j] == table[i][j-1]) {
-						table[i][j] += table[i][j-1]; 
-						score += table[i][j];
-						table[i][j-1] = 0;
+					if(table[i][j].value == table[i][j-1].value) {
+						table[i][j].value += table[i][j-1].value; 
+						score += table[i][j].value;
+						table[i][j-1].value = 0;
 					}
-					if(table[i][j] == 0) {
-						table[i][j] = table[i][j-1];
-						table[i][j-1]= 0;
+					if(table[i][j].value == 0) {
+						table[i][j].value = table[i][j-1].value;
+						table[i][j-1].value= 0;
 					}
 				}
 			}
 		}
 		for(int k = 0; k < size; k++) {
-			for (int i = 0; i < button.length; i++) {
-				for (int j = 0; j < button[0].length; j++) {
-					if(table[i][j] == 0) continue;
-					if(j < button[0].length-1) {
-						if(table[i][j+1] == 0) {
-							table[i][j+1] = table[i][j];
-							table[i][j]= 0;
+			for (int i = 0; i < table.length; i++) {
+				for (int j = 0; j < table[0].length; j++) {
+					if(table[i][j].value == 0) continue;
+					if(j < table[0].length-1) {
+						if(table[i][j+1].value == 0) {
+							table[i][j+1].value = table[i][j].value;
+							table[i][j].value= 0;
 						}
-						if(table[i][j+1] == table[i][j]) {
-							table[i][j+1] += table[i][j];
-							score += table[i][j+1];
-							table[i][j] = 0;
+						if(table[i][j+1].value == table[i][j].value) {
+							table[i][j+1].value += table[i][j].value;
+							score += table[i][j+1].value;
+							table[i][j].value = 0;
 						}
 					}
 				}
@@ -237,20 +223,10 @@ public class Game extends JFrame{
 	}
 	
 	
-	
-	
-	public void cleanButton() {
-		for (int i = 0; i < button.length; i++) {
-			for (int j = 0; j < button[0].length; j++) {
-				button[i][j].setText("");
-			}
-		}
-	}
-	
 	public void cleanTable() {
 		for (int i = 0; i < table.length; i++) {
 			for (int j = 0; j < table[0].length; j++) {
-				table[i][j]=0;
+				table[i][j].value=0;
 			}
 		}
 	}
@@ -258,7 +234,7 @@ public class Game extends JFrame{
 	public void viewTable() {
 		for (int i = 0; i < table.length; i++) {
 			for (int j = 0; j < table[0].length; j++) {
-				System.out.print(table[i][j] + "\t");
+				System.out.print(table[i][j].value + "\t");
 			}
 			System.out.println();
 		}
@@ -274,8 +250,8 @@ public class Game extends JFrame{
 			int j = randNum % table[0].length;
 //			System.out.println("randNum = " + randNum);
 //			System.out.println("i=" + i + ", j=" + j);
-			if(table[i][j] == 0) {
-				table[i][j] = 2;
+			if(table[i][j].value == 0) {
+				table[i][j].value = 2;
 				flag = false;
 			}
 			System.out.println("·çÇÁÁß");
@@ -292,19 +268,18 @@ public class Game extends JFrame{
 	public void initTableButton() {
 		int num = 0;
 		for (int i = 0; i < randNum.length; i++) {
-			num = (int)(Math.random() * (button.length * button[0].length));
+			num = (int)(Math.random() * (table.length * table[0].length));
 			randNum[i] = num;
 			while(i!=0 && randNum[i] == randNum[i-1]) {
-				randNum[i] = (int)(Math.random() * (button.length * button[0].length));
+				randNum[i] = (int)(Math.random() * (table.length * table[0].length));
 			}
 			System.out.println(randNum[i]);
 		}
 		
-		for (int i = 0; i < button.length; i++) {
-			for (int j = 0; j < button[0].length; j++) {
-				if(randNum[0] == i*(button[0].length) + j || randNum[1] == i*(button[0].length) + j) {
-					button[i][j].setText("2");
-					table[i][j] = 2;
+		for (int i = 0; i < table.length; i++) {
+			for (int j = 0; j < table[0].length; j++) {
+				if(randNum[0] == i*(table[0].length) + j || randNum[1] == i*(table[0].length) + j) {
+					table[i][j].value = 2;
 				}
 			}
 		}
@@ -337,6 +312,7 @@ public class Game extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Back");
 				backDrawTableButton();
+				pan.repaint();
 				Game.this.requestFocusInWindow();
 			}
 		});
@@ -346,18 +322,27 @@ public class Game extends JFrame{
 				System.out.println("Restart");
 				writehiScore();
 				cleanTable();
-				cleanButton();
 				initTableButton();
+				pan.repaint();
 				Game.this.setFocusable(true);
 	            Game.this.requestFocusInWindow();
 			}
 		});
 	}
 	
+	public void initTable() {
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				table[i][j] = new Tile();
+				imsi[i][j] = new Tile();
+			}
+		}
+	}
+	
 	public void initPanel(int size){
-		button = new RoundedButton[size][size];
-		table = new int[size][size];
-		imsi = new int[size][size];
+		table = new Tile[size][size];
+		imsi = new Tile[size][size];
+		initTable();
 		menu = new JPanel();
 	    menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
 	    label[0] = new JLabel(labelText[0]);
@@ -385,26 +370,19 @@ public class Game extends JFrame{
 	    menu.add(box1);
 	    menu.add(box2);
 	    
-	    pan = new JPanel(new GridLayout(size,size));
-	    for (int i = 0; i < button.length; i++) {
-			for (int j = 0; j < button[0].length; j++) {
-				button[i][j] = new RoundedButton("",new Color(255,247,242),new Color(70,103,106));
-				button[i][j].setFont(new Font("",Font.BOLD,20));
-				pan.add(button[i][j]);
-			}
-		}
+	    pan = new GridPan();
 	    
 	    initTableButton();
 	    
 	    menu.setBackground(new Color(255,204,102));
 	    this.add("North",menu);
 	    this.add(pan);
-	    
+	    System.out.println(pan.toString());
 	}
 
 	public Game(int size) {
 		super("Game");
-		initPanel(this.size=size);
+		initPanel(Game.size=size);
 		this.setFocusable(true);
 		
 		this.addKeyListener(new KeyAdapter() {
@@ -416,9 +394,8 @@ public class Game extends JFrame{
 					copyTable();
 					moveLeft();
 					writeScore();
-					drawButton();
 					addRandNum();
-					drawButton();
+					pan.repaint();
 				}
 				
 				if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -427,9 +404,8 @@ public class Game extends JFrame{
 					copyTable();
 					moveRight();
 					writeScore();
-					drawButton();
 					addRandNum();
-					drawButton();
+					pan.repaint();
 				}
 				
 				if(e.getKeyCode() == KeyEvent.VK_UP) {
@@ -438,9 +414,8 @@ public class Game extends JFrame{
 					copyTable();
 					moveUp();
 					writeScore();
-					drawButton();
 					addRandNum();
-					drawButton();
+					pan.repaint();
 				}
 				
 				if(e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -449,9 +424,8 @@ public class Game extends JFrame{
 					copyTable();
 					moveDown();
 					writeScore();
-					drawButton();
 					addRandNum();
-					drawButton();
+					pan.repaint();
 				}
 				
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -461,8 +435,126 @@ public class Game extends JFrame{
 		});
 		this.setBounds(100, 100, 600, 600);
 		this.setResizable(false);
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
+	public static class GridPan extends JPanel{
+		static final Color BG_COLOR = new Color(0xbbada0);
+		static int TILE_SIZE;
+		static final int TILES_MARGIN = 12;
+		static int TABLE_OFFSET;
+		static int TABLE_MARGIN;
+		
+		
+		public GridPan() {
+			setPreferredSize(new Dimension(340, 400));
+			setFocusable(true);
+			tileSetting();
+			repaint();
+		}
+		
+		public void tileSetting() { 
+			switch(Game.size) {
+			case 3:
+				TILE_SIZE = 128;
+				TABLE_OFFSET = 50;
+				TABLE_MARGIN = 30;
+				break;
+			case 4:
+				TILE_SIZE = 95;
+				TABLE_OFFSET = 45;
+				TABLE_MARGIN = 30;
+				break;
+			case 5:
+				TILE_SIZE = 75;
+				TABLE_OFFSET = 60;
+				TABLE_MARGIN = 15;
+				break;
+			}
+		}
+		
+		
+		
+		@Override
+		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			g.setColor(BG_COLOR);
+			g.fillRect(0, 0, this.getSize().width, this.getSize().height);
+			for(int y = 0 ; y < size; y++) {
+				for(int x = 0; x < size; x++) {
+					drawTile(g,table[y][x],x,y);
+				}
+			}
+		}
+		
+		public void drawTile(Graphics g2, Tile tile,int x,int y) {
+			Graphics2D g = ((Graphics2D)g2);
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		    g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+		    int value = tile.value;
+		    int xOffset = offsetCoors(x);
+		    xOffset += TABLE_OFFSET;
+		    int yOffset = offsetCoors(y);
+		    g.setColor(tile.getBackground());
+		    g.fillRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 14, 14);
+		    g.setColor(tile.getForeground());
+		    final int size = value < 100 ? 36 : value < 1000 ? 32 : 24;
+		    final Font font = new Font("Arial",Font.BOLD,size);
+		    g.setFont(font);
+		    
+		    String s = String.valueOf(value);
+		    final FontMetrics fm = getFontMetrics(font);
+		    
+		    final int w = fm.stringWidth(s);
+		    final int h = -(int) fm.getLineMetrics(s, g).getBaselineOffsets()[2];
+		    
+		    if(value != 0)
+		    	g.drawString(s,xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 -2);
+		    
+		}
+		
+		private static int offsetCoors(int arg) {
+			return arg * (TILES_MARGIN + TILE_SIZE) + TILES_MARGIN + TABLE_MARGIN;
+		}
+		
+	}
+	
+	static class Tile {
+	    public int value;
+
+	    public Tile() {
+	      this(0);
+	    }
+
+	    public Tile(int num) {
+	      value = num;
+	    }
+
+	    public boolean isEmpty() {
+	      return value == 0;
+	    }
+
+	    public Color getForeground() {
+	      return value < 16 ? new Color(0x776e65) :  new Color(0xf9f6f2);
+	    }
+
+	    public Color getBackground() {
+	      switch (value) {
+	        case 2:    return new Color(0xeee4da);
+	        case 4:    return new Color(0xede0c8);
+	        case 8:    return new Color(0xf2b179);
+	        case 16:   return new Color(0xf59563);
+	        case 32:   return new Color(0xf67c5f);
+	        case 64:   return new Color(0xf65e3b);
+	        case 128:  return new Color(0xedcf72);
+	        case 256:  return new Color(0xedcc61);
+	        case 512:  return new Color(0xedc850);
+	        case 1024: return new Color(0xedc53f);
+	        case 2048: return new Color(0xedc22e);
+	      }
+	      return new Color(0xcdc1b4);
+	    }
+	  }
 }
