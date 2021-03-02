@@ -1,4 +1,4 @@
-package sist.com.pacman;
+package pacman;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -76,7 +76,7 @@ public class Pacman extends JFrame {
 	}
 
 	public class Pan extends Canvas implements Runnable {
-		String dir = "C:\\Users\\YUNA\\git\\repository\\Exercise\\src\\sist\\com\\pacman\\";
+		String dir = "Image\\";
 		private Image image;
 		private int x = 225;
 		private int y = 225; // 팩맨 시작 위치(가운데)
