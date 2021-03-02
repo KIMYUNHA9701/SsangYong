@@ -310,7 +310,7 @@ public class Game extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				writehiScore();
 				System.out.println("(after)hiscore : " + hiscore);
-				MemberDao.updateGameScore3(sessionId, hiscore);
+				MemberDao.updateGameScore(sessionId, hiscore,3);
 				new Puzzle(sessionId);
 				dispose();
 			}
@@ -391,7 +391,7 @@ public class Game extends JFrame{
 	public Game(int size,String id) {
 		super("Game");
 		sessionId = id;
-		hiscore = MemberDao.selectGameScore3(sessionId);
+		hiscore = MemberDao.selectGameScore(sessionId,3);
 		System.out.println("hiscore : " + hiscore);
 		initPanel(Game.size=size);
 		this.setFocusable(true);
@@ -453,7 +453,7 @@ public class Game extends JFrame{
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				writehiScore();
-				MemberDao.updateGameScore3(sessionId, hiscore);
+				MemberDao.updateGameScore(sessionId, hiscore,3);
 				new Puzzle(sessionId);
 				Game.this.dispose();
 			}

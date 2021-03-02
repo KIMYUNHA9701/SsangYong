@@ -195,8 +195,9 @@ public class MemberDao {
 	}
 	
 	
-	public static int selectGameScore3(String id) {
-		String sql = "SELECT GAME3_SCORE FROM MEMBER WHERE ID = ? ";
+	public static int selectGameScore(String id,int order) {
+		String[] gameSelect = {"GAME1_SCORE","GAME2_SCORE","GAME3_SCORE"};
+		String sql = "SELECT " + gameSelect[order-1] + " FROM MEMBER WHERE ID = ? ";
 		Connection con = Serviceutil.getInstance().getconnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -222,8 +223,9 @@ public class MemberDao {
 		return hiscore;
 	}
 	
-	public static void updateGameScore3(String id,int hiscore) {
-		String sql = "UPDATE MEMBER SET GAME3_SCORE = ? WHERE ID = ? ";
+	public static void updateGameScore(String id,int hiscore,int order) {
+		String[] gameSelect = {"GAME1_SCORE","GAME2_SCORE","GAME3_SCORE"};
+		String sql = "UPDATE MEMBER SET " + gameSelect[order - 1] + " = ? WHERE ID = ? ";
 		Connection con =  Serviceutil.getInstance().getconnection();
 		PreparedStatement pstmt = null;
 		try {

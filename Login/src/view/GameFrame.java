@@ -10,19 +10,29 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import findDifference.GamePlay;
 import first.*;
+import pacman.Pacman;
 
 public class GameFrame extends JFrame implements ActionListener{
 	
 	JPanel panel;
 	ImageIcon icon;
 	JButton[] buttons = new JButton[5];
-	String[] strBtns = {"PackMan", "SearchWeird","2048","Member Info","LogOut"};
+	String[] strBtns = {"FindDifference", "Pacman","2048","Member Info","LogOut"};
 	String sessionId = null;
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		if(e.getSource() == buttons[0]) {
+			new GamePlay(sessionId);
+		}
+		
+		if(e.getSource() == buttons[1]){
+			new Pacman(sessionId);
+		}
 		if(e.getSource() == buttons[2]) {
 			new Puzzle(sessionId);
 		}
