@@ -17,6 +17,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 
 public class Pacman extends JFrame {
+	// 게임 설명
+	// 60초 안에 키보드로 팩맨을 움직여 고스트를 피해 먹이를 먹는 게임
+	// 먹이는 하나당 20점*5
+	// time item을 먹으면 시간 +30초(최대 60초)
+	// x2 item을 먹으면 점수*2
+	// 고스트는 기본 값에서 가로 세로로 움직이되 특정 범위내에 팩맨이 감지되면 따라옴
+	// 먹이를 다 먹으면 게임 stop -> 획득한 점수 + 남은 시간 = 최종점수
+	// time=0 이 되도 게임 stop -> 획득한 점수 + 남은 시간(=0) = 최종점수
+	// 고스트와 닿아도 게임 stop -> 0점
 	String dir = "IMG\\";
 	Pan pan = new Pan();
 	Timer timer = new Timer();
@@ -34,17 +43,27 @@ public class Pacman extends JFrame {
 	private int sel = 2; // 팩맨 시작 그림
 	private JProgressBar pb;
 
+	//팩맨
 	private Image pacImg;
 	private int x = 225;
 	private int y = 225; // 팩맨 시작 위치(가운데)
 	private int count; // 먹이 먹은 횟수 저장
 
+	//고스트
 	private Image ghostImg1;
-	private int ghostx = 50;
-	private int ghosty = 50;
+	private int ghostx = 10;
+	private int ghosty = 30;
 	private Image ghostImg2;
-	private int ghostx2 = 350;
-	private int ghosty2 = 350;
+	private int ghostx2 = 430;
+	private int ghosty2 = 400;
+
+	//아이템
+	private Image x2Img;
+	private int x2x;
+	private int x2y;
+	private Image timeImg;
+	private int timex;
+	private int timey;
 
 	public Pacman() {
 		this.setLayout(new BorderLayout());
@@ -107,7 +126,10 @@ public class Pacman extends JFrame {
 					}
 				}
 			}
-
+			x2x = (int) (Math.random() * 401) + 50; // 좌표 값50~450사이의 난수 생성
+			x2y = (int) (Math.random() * 401) + 50; // 좌표 값50~450사이의 난수 생성
+			timex = (int) (Math.random() * 401) + 50; // 좌표 값50~450사이의 난수 생성
+			timey = (int) (Math.random() * 401) + 50; // 좌표 값50~450사이의 난수 생성
 		}// Pacman 생성자()
 
 		public void paint(Graphics g) {
@@ -117,19 +139,28 @@ public class Pacman extends JFrame {
 			for (int i = 0; i < 5; i++) {
 				int foodx;
 				int foody;
-				foodImg[i] = t.getImage(dir + "cookie.png");
+				foodImg[i] = t.getImage(dir + "circle1.png");
 				foodx = food[i][0];
 				foody = food[i][1];
 				g.drawImage(foodImg[i], foodx, foody, this);
 
 			}
+			ghostImg1 = t.getImage(dir + "ghost3.png");
+			g.drawImage(ghostImg1, ghostx, ghosty, this);
+
 			// 팩맨 이미지 변경
 			g.drawImage(pacImg, x, y, x + 50, y + 50, sel * 50, 0, sel * 50 + 50, 50, this);
 
-			ghostImg1 = t.getImage(dir + "ghost1.png");
+			ghostImg1 = t.getImage(dir + "ghost3.png");
 			g.drawImage(ghostImg1, ghostx, ghosty, this);
-			ghostImg2 = t.getImage(dir + "ghost2.png");
+			ghostImg2 = t.getImage(dir + "ghost4.png");
 			g.drawImage(ghostImg2, ghostx2, ghosty2, this);
+
+			x2Img = t.getImage(dir + "x2.png");
+			g.drawImage(x2Img, x2x, x2y, this);
+
+			timeImg = t.getImage(dir + "time.png");
+			g.drawImage(timeImg, timex, timey, this);
 
 		}
 
@@ -216,7 +247,7 @@ public class Pacman extends JFrame {
 					}
 				}
 
-				// 사과가 완전히 잡아 먹혀야 먹힘
+				// 먹이가 완전히 잡아 먹혀야 먹힘
 				for (int i = 0; i < food.length; i++) {
 					if (food[i][0] + 10 > x + 15 && food[i][0] + 10 < x + 35) {
 						if (food[i][1] + 10 > y + 15 && food[i][1] + 10 < y + 35) {
@@ -232,6 +263,7 @@ public class Pacman extends JFrame {
 				// ghost랑 pacman이 만남
 				if (ghostx - 50 <= x && ghostx + 50 >= x) {
 					if (ghosty - 50 <= y && ghosty + 50 >= y) {
+						score = 0;
 						pacmanRunning = false;
 						timeRunning = false;
 					}
@@ -239,8 +271,33 @@ public class Pacman extends JFrame {
 				// ghost2랑 pacman이 만남
 				if (ghostx2 - 50 <= x && ghostx2 + 50 >= x) {
 					if (ghosty2 - 50 <= y && ghosty2 + 50 >= y) {
+						score = 0;
 						pacmanRunning = false;
 						timeRunning = false;
+					}
+				}
+				// 2배 아이탬을 먹음
+				if (x2x + 10 > x + 15 && x2x + 10 < x + 35) {
+					if (x2y + 10 > y + 15 && x2y + 10 < y + 35) {
+						x2x = -100;
+						x2y = -100;
+						// 먹힌 먹이는 프레임 밖으로 보낸다.
+						score *= 2;
+						jlabel.setText("SCORE: " + score);
+					}
+				}
+				// time 아이템을 먹음
+				if (timex + 10 > x + 15 && timex + 10 < x + 35) {
+					if (timey + 10 > y + 15 && timey + 10 < y + 35) {
+						timex = -100;
+						timey = -100;
+						// 먹힌 먹이는 프레임 밖으로 보낸다.
+						if (time <= 40) {
+							time += 20;
+						} else {
+							time = 60;
+						}
+						pb.setValue(time);
 					}
 				}
 				// 먹이를 다 먹었을 때 스레드 종료
@@ -251,7 +308,7 @@ public class Pacman extends JFrame {
 				repaint();
 				// Exception 잡기
 				try {
-					Thread.sleep(80);
+					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
