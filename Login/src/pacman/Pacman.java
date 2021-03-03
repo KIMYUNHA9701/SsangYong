@@ -13,15 +13,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -90,12 +83,6 @@ public class Pacman extends JFrame {
 		this.setLayout(new BorderLayout());
 	    
 		initPanel();
-//		jlabel = new JLabel("SCORE: " + score);
-//		jlabel.setHorizontalAlignment(JLabel.RIGHT);
-//		jlabel.setBackground(new Color(0xbbada0));
-//		jlabel.setPreferredSize(new Dimension(this.WIDTH,40));
-//		jlabel.setOpaque(true);
-//		this.add("North", jlabel);
 		
 		//timer를 위한 프로그레스바
 		pb = new JProgressBar(1, 60);
