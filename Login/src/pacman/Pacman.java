@@ -29,7 +29,7 @@ public class Pacman extends JFrame {
 	// time=0 이 되도 게임 stop -> 획득한 점수 + 남은 시간(=0) = 최종점수
 	// 고스트와 닿아도 게임 stop -> 0점
 	
-	String dir = "IMG\\";
+	String dir = "PacmanImage\\";
 	Pan pan = new Pan();
 	Timer timer = new Timer();
 	Thread pacmanthread;
