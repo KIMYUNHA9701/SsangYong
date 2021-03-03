@@ -8,9 +8,12 @@ import java.awt.Image;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -18,16 +21,38 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 import model.MemberDao;
 
-public class LoginFrame extends JFrame{
+public class LoginFrame extends JFrame implements ActionListener{
 	JScrollPane jScrollPane;
 	ImageIcon icon;
 	JTextField tfId;
 	JPasswordField passwordField;
-	JButton loginBtn,signUpBtn,accountBtn;
-	
+	JButton loginBtn,signUpBtn,accountBtn;	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getActionCommand()=="login") {
+			String id = tfId.getText().trim();
+			String pass = String.valueOf(passwordField.getPassword()).trim();
+			System.out.println("id : " + id);
+			System.out.println("pass : " + pass);
+			if(id.length()==0||pass.length()==0) {
+				JOptionPane.showMessageDialog(LoginFrame.this, "Id Or PassCheck");
+				return;
+			}
+			if(MemberDao.idPassCheck(id, pass)) {
+				new GameFrame(id);
+				LoginFrame.this.dispose();
+			}else {
+				resetField();
+			}
+		}
+	}
+
 	public void resetField() {
 		System.out.println("로그인 실패");
 		JOptionPane.showMessageDialog(this, "Id Or PassFail");
@@ -64,37 +89,21 @@ public class LoginFrame extends JFrame{
 		label_id.setForeground(Color.white);
 		label_id.setFont(new Font("ID",Font.BOLD,20)); 
 		tfId.setBounds(10,80,250,30);
-		
+		tfId.registerKeyboardAction(this, "login", KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), JComponent.WHEN_FOCUSED);
+
 		label_pw.setBounds(10,130,250,30);
 		label_pw.setForeground(Color.white);
 		label_pw.setFont(new Font("PW",Font.BOLD,20)); 
 		passwordField.setBounds(10,160,250,30);
+		passwordField.registerKeyboardAction(this, "login", KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), JComponent.WHEN_FOCUSED);
+
 		loginBtn.setBounds(10, 220, 250, 30);
 		signUpBtn.setBounds(10, 280, 250, 30);
 		accountBtn.setBounds(10, 340, 250, 30);
 		
-		loginBtn.addActionListener(new ActionListener(){
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				String id = tfId.getText().trim();
-				String pass = String.valueOf(passwordField.getPassword()).trim();
-				System.out.println("id : " + id);
-				System.out.println("pass : " + pass);
-				if(id.length()==0||pass.length()==0) {
-					JOptionPane.showMessageDialog(LoginFrame.this, "Id Or PassCheck");
-					return;
-				}
-				if(MemberDao.idPassCheck(id, pass)) {
-					new GameFrame(id);
-					LoginFrame.this.dispose();
-				}else {
-					resetField();
-				}
-			}
-		});
-		
+		loginBtn.setActionCommand("login");
+		loginBtn.addActionListener(this);
+
 		signUpBtn.addActionListener(new ActionListener(){
 
 			@Override
