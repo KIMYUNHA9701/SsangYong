@@ -171,8 +171,8 @@ public class Difference extends JFrame implements ActionListener {
 		this.member = DifferenceDao.member;
 		view();
 		this.setTitle("틀린 그림 찾기");
-		this.setSize(984, 600);
-		this.setLocationRelativeTo(null);
+		this.setBounds(100, 100, 984, 600);
+//		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

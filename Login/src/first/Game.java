@@ -446,7 +446,7 @@ public class Game extends JFrame{
 		});
 		this.setBounds(100, 100, 600, 600);
 		this.setResizable(false);
-		this.setLocationRelativeTo(null);
+//		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.addWindowListener(new WindowAdapter() {
 

@@ -24,7 +24,7 @@ public class DifferenceImage extends JPanel {
 		imgbox.setBounds(0, 0, img1.getIconWidth(), img1.getIconHeight());
 		add(imgbox);
 		this.imgNum = imgNum;
-		this.setBounds(100, 100, 984, 580);
+		this.setBounds(0, 0, 984, 580);
 
 	}
 
