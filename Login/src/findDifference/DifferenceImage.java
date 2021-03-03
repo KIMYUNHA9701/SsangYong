@@ -10,7 +10,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import sis.com.miniproject.DifferenceDao;
 
 public class DifferenceImage extends JPanel {
 

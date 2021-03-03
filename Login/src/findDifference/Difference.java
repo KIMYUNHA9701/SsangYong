@@ -40,7 +40,7 @@ public class Difference extends JFrame implements ActionListener {
     	new Difference();
     }
 	if(e.getSource()==exit)	{
-		System.exit(0);
+			this.dispose();
 	  }
 	}
 
