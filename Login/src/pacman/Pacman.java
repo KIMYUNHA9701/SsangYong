@@ -1,4 +1,4 @@
-package minigame.pacman;
+package pacman;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -15,6 +15,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
+
+import model.MemberDao;
 
 public class Pacman extends JFrame {
 	// 게임 설명
@@ -64,6 +66,9 @@ public class Pacman extends JFrame {
 	private int timex;
 	private int timey;
 
+	String id;
+	int hiscore;
+	
 	public Pacman(String id) {
 		this.id = id;
 		hiscore = MemberDao.selectGameScore(id,2);
