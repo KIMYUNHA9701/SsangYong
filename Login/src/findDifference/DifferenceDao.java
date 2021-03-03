@@ -12,7 +12,7 @@ public class DifferenceDao  {
 	static boolean gameClearCheck;
 	static boolean gameOverCheck;
 	static int count = 1;
-	static final int r = 15;
+	static final int r = 20;
 	static int[] stagescore = {0,2000,4000,6000,8000};
 	static int clear = 0; //0일 때 gameover, 1일 때 gameclear
 	private static DifferenceDao dDao;

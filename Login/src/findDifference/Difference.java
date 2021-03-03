@@ -55,8 +55,8 @@ public class Difference extends JFrame implements ActionListener {
 
 		jpbar = new JProgressBar(0, 100);
 		jpbar.setStringPainted(true);
-		jpbar.setBackground(Color.ORANGE);
-		jpbar.setForeground(Color.RED);
+		jpbar.setBackground(new Color(255,204,102));
+		jpbar.setForeground(new Color(0xbbada0));
 		jpbar.setFont(new Font("±¼¸²", Font.BOLD, 15));
 		jpbar.setString("15 seconds");
 
@@ -66,10 +66,12 @@ public class Difference extends JFrame implements ActionListener {
 
 		jPanelscore = new JPanel(new BorderLayout());
 		jPanelscore.add("West", score = new JLabel("Score: " + gamescore + "Á¡"));
+		jPanelscore.setBackground(new Color(0xbbada0)); 
 		score.setFont(new Font("±¼¸²", Font.BOLD, 30));
 
 		jPanelbutton = new JPanel(new FlowLayout());
 		jPanelbutton.add(restart = new JButton("restart"));
+		jPanelbutton.setBackground(new Color(0xbbada0));
 		restart.addActionListener(this);
 		jPanelbutton.add(exit = new JButton("exit"));
 		exit.addActionListener(this);
@@ -81,12 +83,15 @@ public class Difference extends JFrame implements ActionListener {
 			public void run() {
 				
 				try {
-					int a = 0; //Thread test
+					int a = 0; 
 					for (int count = 0; count <= jpbar.getMaximum(); count++) {
 						count += 1;
 						jpbar.setValue(count);
 						Thread.sleep(300);
-						System.out.println(a++); //Thread test
+						System.out.println(a++); 
+						if(a==30) {
+							jpbar.setForeground(Color.RED);
+						}  
 						if(member.isFound1()==true&&member.isFound2()==true&&
 								member.isFound3()==true&&member.isFound4()==true && 
 								jpbar.getValue()!=jpbar.getMaximum())	{ 
