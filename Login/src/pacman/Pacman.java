@@ -3,17 +3,29 @@ package pacman;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
 import model.MemberDao;
@@ -29,6 +41,14 @@ public class Pacman extends JFrame {
 	// time=0 이 되도 게임 stop -> 획득한 점수 + 남은 시간(=0) = 최종점수
 	// 고스트와 닿아도 게임 stop -> 0점
 	
+	private int score = 0;
+	private int sel = 2; // 팩맨 시작 그림
+	private JProgressBar pb;
+	
+	JPanel panel;
+	JLabel[] label = new JLabel[3];
+	String[] labelText = {"PACMAN","최고점수 : ","점수 : "};
+	
 	String dir = "PacmanImage\\";
 	Pan pan = new Pan();
 	Timer timer = new Timer();
@@ -39,11 +59,6 @@ public class Pacman extends JFrame {
 	int state = 0; // 쓰레드 시작(오른쪽으로 누르면 쓰레드를 스타트시키기 위함)
 	int time = 60;
 	
-	private JLabel jlabel;
-	private int score = 0;
-	private int sel = 2; // 팩맨 시작 그림
-	private JProgressBar pb;
-
 	//팩맨
 	private Image pacImg;
 	private int x = 225;
@@ -73,17 +88,26 @@ public class Pacman extends JFrame {
 		this.id = id;
 		hiscore = MemberDao.selectGameScore(id,2);
 		this.setLayout(new BorderLayout());
-		jlabel = new JLabel("SCORE: " + score);
-		jlabel.setHorizontalAlignment(JLabel.RIGHT);
-		this.add("North", jlabel);
+	    
+		initPanel();
+//		jlabel = new JLabel("SCORE: " + score);
+//		jlabel.setHorizontalAlignment(JLabel.RIGHT);
+//		jlabel.setBackground(new Color(0xbbada0));
+//		jlabel.setPreferredSize(new Dimension(this.WIDTH,40));
+//		jlabel.setOpaque(true);
+//		this.add("North", jlabel);
 		
 		//timer를 위한 프로그레스바
 		pb = new JProgressBar(1, 60);
+		pb.setBackground(new Color(255,204,102));
+		pb.setForeground(new Color(0xbbada0));
+		pb.setString(time+"seconds");
+		pb.setStringPainted(true);
 		pb.setValue(time);
 		this.add("South", pb);
 		this.add("Center", pan);
 		this.getContentPane().setBackground(Color.WHITE);
-		this.setBounds(0, 0, 500, 570);
+		this.setBounds(0, 0, 500, 600);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false); // 창크기 조절 불가능
@@ -115,11 +139,38 @@ public class Pacman extends JFrame {
 		});
 	}
 
+	public void initPanel(){
+		panel = new JPanel();
+		panel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 10));
+	    panel.setLayout(new GridLayout(1,3));
+	    panel.setBackground(new Color(0xbbada0));
+	    label[0] = new JLabel(labelText[0]);
+	    label[1] = new JLabel(labelText[1] + hiscore);
+	    label[2] = new JLabel(labelText[2] + score);
+
+	    
+	    label[0].setFont(new Font(labelText[0], Font.BOLD, 30));
+	    
+	    for (int i = 1; i < 3; i++) {
+	    	label[i].setHorizontalAlignment(JLabel.RIGHT);
+	    	label[i].setBackground(new Color(0xbbada0));
+	    	label[i].setPreferredSize(new Dimension(this.WIDTH,40));
+	    	label[i].setOpaque(true);			
+		}
+	    panel.add(label[0]);
+	    panel.add(label[1]);
+	    panel.add(label[2]);	    
+	    	    
+	    this.add("North",panel);
+	}
+	
 	public class Pan extends Canvas implements Runnable {
 		private Image[] foodImg = new Image[5]; // 푸드 이미지 배열 생성
 		private int[][] food = new int[foodImg.length][2]; // 5개의 먹이의 좌표
 
 		public Pan() {
+//			this.setBackground(new Color(0xbbada0));
+			this.setBackground(new Color(255,204,102));
 			// 먹이의 좌표 배열
 			for (int i = 0; i < food.length; i++) {
 				for (int j = 0; j < 2; j++) {
@@ -141,11 +192,11 @@ public class Pacman extends JFrame {
 		public void paint(Graphics g) {
 			g.drawRect(0, 0, 500, 500);
 			Toolkit t = Toolkit.getDefaultToolkit();
-			pacImg = t.getImage(dir + "pacman.png");
+			pacImg = t.getImage(dir + "pacman2.png");
 			for (int i = 0; i < 5; i++) {
 				int foodx;
 				int foody;
-				foodImg[i] = t.getImage(dir + "circle1.png");
+				foodImg[i] = t.getImage(dir + "circle.png");
 				foodx = food[i][0];
 				foody = food[i][1];
 				g.drawImage(foodImg[i], foodx, foody, this);
@@ -153,8 +204,8 @@ public class Pacman extends JFrame {
 			}
 			// 팩맨 이미지 변경
 			g.drawImage(pacImg, x, y, x + 50, y + 50, sel * 50, 0, sel * 50 + 50, 50, this);
-
 			ghostImg1 = t.getImage(dir + "ghost1.png");
+
 			g.drawImage(ghostImg1, ghostx, ghosty, this);
 			ghostImg2 = t.getImage(dir + "ghost2.png");
 			g.drawImage(ghostImg2, ghostx2, ghosty2, this);
@@ -166,7 +217,7 @@ public class Pacman extends JFrame {
 			g.drawImage(timeImg, timex, timey, this);
 
 		}
-
+			
 		// 스레드 run 메소드 오버라이드
 		@Override
 		public void run() {
@@ -258,7 +309,7 @@ public class Pacman extends JFrame {
 							food[i][1] = -100;
 							// 먹힌 먹이는 프레임 밖으로 보낸다.
 							score += 20;
-							jlabel.setText("SCORE: " + score);
+							label[2].setText("점수: " + score);
 							count++;
 						}
 					}
@@ -266,7 +317,7 @@ public class Pacman extends JFrame {
 				// ghost랑 pacman이 만남
 				if (ghostx - 50 <= x && ghostx + 50 >= x) {
 					if (ghosty - 50 <= y && ghosty + 50 >= y) {
-						score = 0;
+//						score = 0;
 						pacmanRunning = false;
 						timeRunning = false;
 					}
@@ -274,7 +325,7 @@ public class Pacman extends JFrame {
 				// ghost2랑 pacman이 만남
 				if (ghostx2 - 50 <= x && ghostx2 + 50 >= x) {
 					if (ghosty2 - 50 <= y && ghosty2 + 50 >= y) {
-						score = 0;
+//						score = 0;
 						pacmanRunning = false;
 						timeRunning = false;
 					}
@@ -286,7 +337,7 @@ public class Pacman extends JFrame {
 						x2y = -100;
 						// 먹힌 먹이는 프레임 밖으로 보낸다.
 						score *= 2;
-						jlabel.setText("SCORE: " + score);
+						label[2].setText("점수: " + score);
 					}
 				}
 				// time 아이템을 먹음
@@ -301,6 +352,7 @@ public class Pacman extends JFrame {
 							time = 60;
 						}
 						pb.setValue(time);
+						pb.setString(time+"seconds");
 					}
 				}
 				// 먹이를 다 먹었을 때 스레드 종료
@@ -317,6 +369,7 @@ public class Pacman extends JFrame {
 				}
 			}
 		}
+		
 	}
 
 	public class Timer extends Thread {
@@ -327,6 +380,7 @@ public class Pacman extends JFrame {
 				try {
 					time--;
 					pb.setValue(time);
+					pb.setString(time+"seconds");
 					sleep(1000);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -343,7 +397,7 @@ public class Pacman extends JFrame {
 					time--;
 					score++;
 					pb.setValue(time);
-					jlabel.setText("SCORE: " + score);
+					label[2].setText("점수: " + score);
 					sleep(50);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -353,6 +407,7 @@ public class Pacman extends JFrame {
 					break;
 				}
 			}
+			resultScore();
 			restart();
 		}
 	}
