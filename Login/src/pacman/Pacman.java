@@ -373,6 +373,9 @@ public class Pacman extends JFrame {
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
+				if (time < 20) {
+					pb.setForeground(Color.RED);
+				}
 				if (time == 0) {
 					pacmanRunning = false;
 					timeRunning = false;
@@ -420,7 +423,7 @@ public class Pacman extends JFrame {
 		MemberDao.updateGameScore(id, hiscore, 2);
 	}
 
-	//쓰레드시작
+	// 쓰레드시작
 	public void threadstart() {
 		pacmanthread = new Thread(pan);
 		pacmanthread.start();
