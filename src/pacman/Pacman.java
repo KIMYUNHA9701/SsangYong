@@ -64,7 +64,9 @@ public class Pacman extends JFrame {
 	private int timex;
 	private int timey;
 
-	public Pacman() {
+	public Pacman(String id) {
+		this.id = id;
+		hiscore = MemberDao.selectGameScore(id,2);
 		this.setLayout(new BorderLayout());
 		jlabel = new JLabel("SCORE: " + score);
 		jlabel.setHorizontalAlignment(JLabel.RIGHT);
@@ -357,7 +359,7 @@ public class Pacman extends JFrame {
 		if (result == JOptionPane.YES_OPTION) {
 			Pacman.this.dispose();
 			// 현재 창 닫고 다시 시작
-			new Pacman();
+			new Pacman(id);
 		} else {
 			Pacman.this.dispose();
 		}
@@ -370,8 +372,10 @@ public class Pacman extends JFrame {
 		timeThread.start();
 	}
 
-	public static void main(String[] args) {
-		Pacman p = new Pacman();
+	//게임의 최고 점수 저장
+	public void resultScore() { 
+		if(hiscore < score) hiscore = score;
+		MemberDao.updateGameScore(id, hiscore,2);
 	}
 
 }
