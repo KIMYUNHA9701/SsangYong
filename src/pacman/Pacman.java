@@ -26,6 +26,7 @@ public class Pacman extends JFrame {
 	// 먹이를 다 먹으면 게임 stop -> 획득한 점수 + 남은 시간 = 최종점수
 	// time=0 이 되도 게임 stop -> 획득한 점수 + 남은 시간(=0) = 최종점수
 	// 고스트와 닿아도 게임 stop -> 0점
+	
 	String dir = "IMG\\";
 	Pan pan = new Pan();
 	Timer timer = new Timer();
@@ -33,12 +34,10 @@ public class Pacman extends JFrame {
 	Thread timeThread;
 	boolean pacmanRunning = true;
 	boolean timeRunning = true;
-
-	// 쓰레드의 상태
-	int state = 0;
-	// 처음 시작(오른쪽으로 누르면 쓰레드를 스타트시키기 위함)
+	int state = 0; // 쓰레드 시작(오른쪽으로 누르면 쓰레드를 스타트시키기 위함)
 	int time = 60;
-	private JLabel jlabel, jlabel2;
+	
+	private JLabel jlabel;
 	private int score = 0;
 	private int sel = 2; // 팩맨 시작 그림
 	private JProgressBar pb;
@@ -49,7 +48,7 @@ public class Pacman extends JFrame {
 	private int y = 225; // 팩맨 시작 위치(가운데)
 	private int count; // 먹이 먹은 횟수 저장
 
-	//고스트
+	//고스트(처음 위치 지정)
 	private Image ghostImg1;
 	private int ghostx = 10;
 	private int ghosty = 30;
@@ -70,8 +69,8 @@ public class Pacman extends JFrame {
 		jlabel = new JLabel("SCORE: " + score);
 		jlabel.setHorizontalAlignment(JLabel.RIGHT);
 		this.add("North", jlabel);
-		jlabel2 = new JLabel(time + "초");
-		jlabel2.setHorizontalAlignment(JLabel.CENTER);
+		
+		//timer를 위한 프로그레스바
 		pb = new JProgressBar(1, 60);
 		pb.setValue(time);
 		this.add("South", pb);
@@ -145,15 +144,12 @@ public class Pacman extends JFrame {
 				g.drawImage(foodImg[i], foodx, foody, this);
 
 			}
-			ghostImg1 = t.getImage(dir + "ghost3.png");
-			g.drawImage(ghostImg1, ghostx, ghosty, this);
-
 			// 팩맨 이미지 변경
 			g.drawImage(pacImg, x, y, x + 50, y + 50, sel * 50, 0, sel * 50 + 50, 50, this);
 
-			ghostImg1 = t.getImage(dir + "ghost3.png");
+			ghostImg1 = t.getImage(dir + "ghost1.png");
 			g.drawImage(ghostImg1, ghostx, ghosty, this);
-			ghostImg2 = t.getImage(dir + "ghost4.png");
+			ghostImg2 = t.getImage(dir + "ghost2.png");
 			g.drawImage(ghostImg2, ghostx2, ghosty2, this);
 
 			x2Img = t.getImage(dir + "x2.png");
