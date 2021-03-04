@@ -83,13 +83,11 @@ public class LoginFrame extends JFrame implements ActionListener {
 		loginBtn = new JButton("Login");
 		signUpBtn = new JButton("Sign Up");
 		accountBtn = new JButton("Account");
-
 		tfId.setBounds(10, 180, 250, 30);
 		tfId.registerKeyboardAction(this, "login", KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
 				JComponent.WHEN_FOCUSED);
 		tfId.setText("  아이디");
 		tfId.setForeground(Color.gray);
-		tfId.setFocusable(false);
 		tfId.addFocusListener(new FocusAdapter() {
 
 			@Override
@@ -120,10 +118,9 @@ public class LoginFrame extends JFrame implements ActionListener {
 		passwordField.setBounds(10, 220, 250, 30);
 		passwordField.registerKeyboardAction(this, "login", KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
 				JComponent.WHEN_FOCUSED);
-		passwordField.setEchoChar((char)0);
+		passwordField.setEchoChar((char)0); //글자가 보이게 표시
 		passwordField.setText("  비밀번호");
 		passwordField.setForeground(Color.GRAY);
-		passwordField.setFocusable(false);
 		passwordField.addFocusListener(new FocusAdapter() {
 
 			@Override
@@ -158,8 +155,6 @@ public class LoginFrame extends JFrame implements ActionListener {
 		loginBtn.setBounds(10, 290, 250, 30);
 		signUpBtn.setBounds(10, 330, 250, 30);
 		accountBtn.setBounds(10, 370, 250, 30);
-		
-
 		loginBtn.setActionCommand("login");
 		loginBtn.addActionListener(this);
 
