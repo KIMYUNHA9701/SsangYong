@@ -40,7 +40,7 @@ public class Difference extends JFrame implements ActionListener {
     	new Difference();
     }
 	if(e.getSource()==exit)	{
-		System.exit(0);
+			this.dispose();
 	  }
 	}
 
@@ -55,8 +55,8 @@ public class Difference extends JFrame implements ActionListener {
 
 		jpbar = new JProgressBar(0, 100);
 		jpbar.setStringPainted(true);
-		jpbar.setBackground(Color.ORANGE);
-		jpbar.setForeground(Color.RED);
+		jpbar.setBackground(new Color(255,204,102));
+		jpbar.setForeground(new Color(0xbbada0));
 		jpbar.setFont(new Font("굴림", Font.BOLD, 15));
 		jpbar.setString("15 seconds");
 
@@ -66,10 +66,12 @@ public class Difference extends JFrame implements ActionListener {
 
 		jPanelscore = new JPanel(new BorderLayout());
 		jPanelscore.add("West", score = new JLabel("Score: " + gamescore + "점"));
+		jPanelscore.setBackground(new Color(0xbbada0)); 
 		score.setFont(new Font("굴림", Font.BOLD, 30));
 
 		jPanelbutton = new JPanel(new FlowLayout());
 		jPanelbutton.add(restart = new JButton("restart"));
+		jPanelbutton.setBackground(new Color(0xbbada0));
 		restart.addActionListener(this);
 		jPanelbutton.add(exit = new JButton("exit"));
 		exit.addActionListener(this);
@@ -81,12 +83,15 @@ public class Difference extends JFrame implements ActionListener {
 			public void run() {
 				
 				try {
-					int a = 0; //Thread test
+					int a = 0; 
 					for (int count = 0; count <= jpbar.getMaximum(); count++) {
 						count += 1;
 						jpbar.setValue(count);
 						Thread.sleep(300);
-						System.out.println(a++); //Thread test
+						System.out.println(a++); 
+						if(a==30) {
+							jpbar.setForeground(Color.RED);
+						}  
 						if(member.isFound1()==true&&member.isFound2()==true&&
 								member.isFound3()==true&&member.isFound4()==true && 
 								jpbar.getValue()!=jpbar.getMaximum())	{ 
@@ -166,8 +171,8 @@ public class Difference extends JFrame implements ActionListener {
 		this.member = DifferenceDao.member;
 		view();
 		this.setTitle("틀린 그림 찾기");
-		this.setSize(984, 600);
-		this.setLocationRelativeTo(null);
+		this.setBounds(100, 100, 984, 600);
+//		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -100,7 +100,7 @@ public class Pacman extends JFrame {
 		this.add("South", pb);
 		this.add("Center", pan);
 		this.getContentPane().setBackground(Color.WHITE);
-		this.setBounds(0, 0, 500, 600);
+		this.setBounds(100, 100, 500, 600);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false); // 창크기 조절 불가능

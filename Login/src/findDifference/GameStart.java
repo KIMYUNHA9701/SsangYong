@@ -28,8 +28,8 @@ import javax.swing.JPanel;
 
 		public GameStart() {
 			this.setTitle("Æ²¸° ±×¸² Ã£±â");
-			this.setSize(984, 600);
-			this.setLocationRelativeTo(null);
+			this.setBounds(100, 100, 984, 580);
+//			this.setLocationRelativeTo(null);
 			this.setVisible(true);
 			this.setResizable(false);
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,8 +37,8 @@ import javax.swing.JPanel;
 			this.setLayout(new BorderLayout());
 			jPanel = new JPanel(new BorderLayout());
 			jPanel.add("West", userInfo = new JLabel("userId: " + DifferenceDao.id));
-			jPanel.setBackground(Color.ORANGE);
-			userInfo.setFont(new Font("±¼¸²", Font.BOLD, 20));
+			jPanel.setBackground(new Color(0xbbada0)); 
+			userInfo.setFont(new Font("±¼¸²", Font.BOLD, 30));
 			this.add("North", jPanel);
 
 			Panel panel = new Panel("FDImage\\sss.png");
@@ -47,20 +47,20 @@ import javax.swing.JPanel;
 			jPanel2 = new JPanel();
 			jPanel2.add(jButton = new JButton("start"));
 			jButton.addActionListener(this);
-			jPanel2.setBackground(Color.ORANGE);
+			jPanel2.setBackground(new Color(255,204,102));
 			this.add("South", jPanel2);
 		}
 
 		public class Panel extends JPanel {
 
-			public Panel(String imgFile) {
-				start = new ImageIcon(imgFile);
-				imgbox = new JLabel(start);
-				imgbox.setSize(start.getIconWidth(), start.getIconHeight());
-				add(imgbox);
-				this.setBackground(Color.ORANGE);
-
-			}
+	         public Panel(String imgFile) {
+	            this.setLayout(new GridLayout(1,1));
+	            start = new ImageIcon(imgFile);
+	            
+	            imgbox = new JLabel(start);
+	            this.add(imgbox);
+	           
+	         }
 
 		}
 
