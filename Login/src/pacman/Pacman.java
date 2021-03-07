@@ -17,6 +17,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.BorderFactory;
@@ -43,7 +44,6 @@ public class Pacman extends JFrame {
 
 	// panel
 	private JPanel panel1;
-//	private JButton slowBtn, fastBtn;
 	private RoundedButton slowBtn, fastBtn;
 	private JLabel[] label = new JLabel[3];
 	private String[] labelText = { "PACMAN", "최고점수 : ", "점수 : " };
@@ -62,7 +62,7 @@ public class Pacman extends JFrame {
 	Thread timeThread;
 	boolean pacmanRunning = true;
 	boolean timeRunning = true;
-	private int state = 0; // 쓰레드 시작(오른쪽으로 누르면 쓰레드를 스타트시키기 위함)
+	private int state; // 쓰레드 시작(오른쪽으로 누르면 쓰레드를 스타트시키기 위함)
 	private int time = 60;
 	private int slowTime;
 	private int fastTime;
@@ -97,17 +97,32 @@ public class Pacman extends JFrame {
 	private String id;
 	private int hiscore;
 	private int point;
-	
+	ArrayList<Object[]> itemlist = new ArrayList<Object[]>();
 	// 현재 점수
-	private int score = 0;
+	private int score;
+
+	private int slowcnt;
+	private int fastcnt;
 
 	public Pacman(String id) {
 		// dao에서 받아오기
 		this.id = id;
 		hiscore = MemberDao.selectGameScore(id, 2);
 		point = MemberDao.selectPoint(id);
+<<<<<<< HEAD
 		System.out.println("member!!!");
 		MemberDao.selectGameItem(id, 2);
+=======
+		itemlist = MemberDao.selectGameItem(id, 2);
+		System.out.println(itemlist.size());
+		System.out.println(itemlist.get(0)[0]);
+		System.out.println(itemlist.get(0)[1]);
+		System.out.println(itemlist.get(1)[0]);
+		System.out.println(itemlist.get(1)[1]);
+		slowcnt = (int) itemlist.get(0)[1];
+		fastcnt = (int) itemlist.get(1)[1];
+
+>>>>>>> branch 'MiniGame' of https://github.com/KIMYUNHA9701/SsangYong.git
 		this.setLayout(new BorderLayout());
 		this.getContentPane().setBackground(Color.WHITE);
 		this.setBounds(100, 100, FrameWidth, FrameHeight);
@@ -162,9 +177,9 @@ public class Pacman extends JFrame {
 
 		label[0].setFont(new Font(labelText[0], Font.BOLD, 30));
 
-		slowBtn = new RoundedButton("slow");
+		slowBtn = new RoundedButton("slow " + slowcnt);
 		slowBtn.setFocusable(false);
-		fastBtn = new RoundedButton("fast");
+		fastBtn = new RoundedButton("fast " + fastcnt);
 		fastBtn.setFocusable(false);
 
 		slowBtn.addActionListener(new ActionListener() {
@@ -172,8 +187,14 @@ public class Pacman extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				slow = true;
-				slowTime = time;
+				if (slowcnt <= 0) {
+					System.out.println("안돼");
+				} else {
+					slow = true;
+					slowTime = time;
+					slowcnt--;
+					slowBtn.setText(" "+slowcnt);
+				}
 			}
 		});
 		fastBtn.addActionListener(new ActionListener() {
@@ -181,8 +202,14 @@ public class Pacman extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				fast = true;
-				fastTime = time;
+				if (fastcnt <= 0) {
+					System.out.println("안돼");
+				} else {
+					fast = true;
+					fastTime = time;
+					fastcnt--;
+					fastBtn.setText(" "+fastcnt);
+				}
 			}
 		});
 
@@ -539,7 +566,7 @@ public class Pacman extends JFrame {
 	}
 
 	public void resultPoint() {
-		point = (int) (score / 10);
+		point += (int) (score / 10);
 		MemberDao.updatePoint(id, point);
 	}
 

@@ -340,12 +340,12 @@ public class MemberDao {
 			pstmt.setInt(2, order);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				System.out.println("1");
 				item[0] = rs.getString(1);
 				item[1] = rs.getInt(2);
 				itemlist.add(item);
 				System.out.println(item[0]);
 				System.out.println(item[1]);
+				System.out.println(Arrays.toString(item));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
