@@ -28,7 +28,7 @@ public class Difference extends JFrame implements ActionListener {
 	JLabel score;
     JProgressBar jpbar;
 	JPanel jPanelscore, jPanelbar, jPanelbutton, jPanelimg;
-	JButton restart, exit;
+	RoundedButton restart, exit;
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -70,10 +70,10 @@ public class Difference extends JFrame implements ActionListener {
 		score.setFont(new Font("±¼¸²", Font.BOLD, 30));
 
 		jPanelbutton = new JPanel(new FlowLayout());
-		jPanelbutton.add(restart = new JButton("restart"));
+		jPanelbutton.add(restart = new RoundedButton("restart"));
 		jPanelbutton.setBackground(new Color(0xbbada0));
 		restart.addActionListener(this);
-		jPanelbutton.add(exit = new JButton("exit"));
+		jPanelbutton.add(exit = new RoundedButton("exit"));
 		exit.addActionListener(this);
 
 		jPanelscore.add("East", jPanelbutton);

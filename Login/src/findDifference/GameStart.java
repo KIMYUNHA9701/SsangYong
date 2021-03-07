@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 		ImageIcon start;
 		JLabel imgbox, userInfo;
 		JPanel jPanel, jPanel2;
-		JButton jButton;
+		RoundedButton jButton;
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -45,7 +45,7 @@ import javax.swing.JPanel;
 			
 			this.add("Center", panel);
 			jPanel2 = new JPanel();
-			jPanel2.add(jButton = new JButton("start"));
+			jPanel2.add(jButton = new RoundedButton("start"));
 			jButton.addActionListener(this);
 			jPanel2.setBackground(new Color(255,204,102));
 			this.add("South", jPanel2);

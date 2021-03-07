@@ -19,7 +19,7 @@ public class GameFrame extends JFrame implements ActionListener{
 	
 	JPanel panel;
 	ImageIcon icon;
-	JButton[] buttons = new JButton[5];
+	RoundedButton[] buttons = new RoundedButton[5];
 	String[] strBtns = {"FindDifference", "Pacman","2048","Member Info","LogOut"};
 	String sessionId = null;
 	
@@ -46,7 +46,7 @@ public class GameFrame extends JFrame implements ActionListener{
 	}
 	
 	public void backImage() {
-		icon = new ImageIcon("Image\\minigame.jpg");
+		icon = new ImageIcon("Image\\binigame.jpg");
 		Image iconImg = icon.getImage();
 		iconImg = iconImg.getScaledInstance(300, 500, Image.SCALE_SMOOTH);
 		icon.setImage(iconImg);
@@ -54,7 +54,7 @@ public class GameFrame extends JFrame implements ActionListener{
 
 	public void buttonInit() {
 		for (int i = 0; i < buttons.length; i++) {
-			buttons[i] = new JButton(strBtns[i]);
+			buttons[i] = new RoundedButton(strBtns[i]);
 			buttons[i].addActionListener(this);
 			buttons[i].setBounds(10,80 + (i * 60),250,30);
 			panel.add(buttons[i]);

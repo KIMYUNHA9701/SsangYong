@@ -30,8 +30,9 @@ public class LoginFrame extends JFrame implements ActionListener {
 	JScrollPane jScrollPane;
 	ImageIcon icon;
 	JTextField tfId;
+	JLabel label;
 	JPasswordField passwordField;
-	JButton loginBtn, signUpBtn, accountBtn;
+	RoundedButton loginBtn, signUpBtn, accountBtn;
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -62,7 +63,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 	}
 
 	public void backImage() {
-		icon = new ImageIcon("Image\\minigame.jpg");
+		icon = new ImageIcon("Image\\binigame.jpg");
 		Image iconImg = icon.getImage();
 		iconImg = iconImg.getScaledInstance(300, 500, Image.SCALE_SMOOTH);
 		icon.setImage(iconImg);
@@ -78,12 +79,16 @@ public class LoginFrame extends JFrame implements ActionListener {
 			}
 		};
 
+		label = new JLabel("BINI GAME");
+		label.setBounds(10, 50, 250, 50);
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setFont(new Font("title", Font.BOLD, 25));
 		tfId = new JTextField(20);
 		passwordField = new JPasswordField();
-		loginBtn = new JButton("Login");
-		signUpBtn = new JButton("Sign Up");
-		accountBtn = new JButton("Account");
-		tfId.setBounds(10, 180, 250, 30);
+		loginBtn = new RoundedButton("Login");
+		signUpBtn = new RoundedButton("Sign Up");
+		accountBtn = new RoundedButton("Account");
+		tfId.setBounds(10, 120, 250, 30);
 		tfId.registerKeyboardAction(this, "login", KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
 				JComponent.WHEN_FOCUSED);
 		tfId.setText("  아이디");
@@ -93,10 +98,10 @@ public class LoginFrame extends JFrame implements ActionListener {
 			@Override
 			public void focusGained(FocusEvent e) {
 				// TODO Auto-generated method stub
-				if(tfId.getText().equals("  아이디")) {
+				if (tfId.getText().equals("  아이디")) {
 					tfId.setText("");
 					tfId.setForeground(Color.BLACK);
-				}else {
+				} else {
 					tfId.setText(tfId.getText());
 					tfId.setForeground(Color.BLACK);
 				}
@@ -105,20 +110,20 @@ public class LoginFrame extends JFrame implements ActionListener {
 			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
-				if(tfId.getText().equals("  아이디")||tfId.getText().length()==0) {
+				if (tfId.getText().equals("  아이디") || tfId.getText().length() == 0) {
 					tfId.setText("  아이디");
 					tfId.setForeground(Color.GRAY);
-				}else {
+				} else {
 					tfId.setText(tfId.getText());
 					tfId.setForeground(Color.BLACK);
 				}
 			}
-			
+
 		});
-		passwordField.setBounds(10, 220, 250, 30);
+		passwordField.setBounds(10, 160, 250, 30);
 		passwordField.registerKeyboardAction(this, "login", KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
 				JComponent.WHEN_FOCUSED);
-		passwordField.setEchoChar((char)0); //글자가 보이게 표시
+		passwordField.setEchoChar((char) 0); // 글자가 보이게 표시
 		passwordField.setText("  비밀번호");
 		passwordField.setForeground(Color.GRAY);
 		passwordField.addFocusListener(new FocusAdapter() {
@@ -126,12 +131,12 @@ public class LoginFrame extends JFrame implements ActionListener {
 			@Override
 			public void focusGained(FocusEvent e) {
 				// TODO Auto-generated method stub
-				if(passwordField.getText().equals("  비밀번호")) {
+				if (passwordField.getText().equals("  비밀번호")) {
 					passwordField.setText("");
 					passwordField.setEchoChar('*');
 					passwordField.setForeground(Color.BLACK);
-				}else {
-					passwordField.setEchoChar((char)0);
+				} else {
+					passwordField.setEchoChar((char) 0);
 					passwordField.setText(passwordField.getText());
 					passwordField.setForeground(Color.BLACK);
 				}
@@ -140,19 +145,19 @@ public class LoginFrame extends JFrame implements ActionListener {
 			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
-				if(passwordField.getText().equals("  비밀번호")||passwordField.getText().length()==0) {
-					passwordField.setEchoChar((char)0);
+				if (passwordField.getText().equals("  비밀번호") || passwordField.getText().length() == 0) {
+					passwordField.setEchoChar((char) 0);
 					passwordField.setText("  비밀번호");
 					passwordField.setForeground(Color.GRAY);
-				}else {
+				} else {
 					passwordField.setEchoChar('*');
 					passwordField.setText(tfId.getText());
 					passwordField.setForeground(Color.BLACK);
 				}
 			}
-			
+
 		});
-		loginBtn.setBounds(10, 290, 250, 30);
+		loginBtn.setBounds(10, 210, 250, 30);
 		signUpBtn.setBounds(10, 330, 250, 30);
 		accountBtn.setBounds(10, 370, 250, 30);
 		loginBtn.setActionCommand("login");
@@ -175,8 +180,8 @@ public class LoginFrame extends JFrame implements ActionListener {
 				LoginFrame.this.dispose();
 			}
 		});
-		
 
+		panel.add(label);
 		panel.add(tfId);
 		panel.add(passwordField);
 		panel.add(loginBtn);
@@ -199,4 +204,3 @@ public class LoginFrame extends JFrame implements ActionListener {
 	}
 
 }
-
