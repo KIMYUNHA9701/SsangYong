@@ -1,5 +1,11 @@
 package model;
 
+import java.util.ArrayList;
+
+/**
+ * @author YUNA
+ *
+ */
 public class MemberBean {
 	private String id;
 	private String pw;
@@ -7,6 +13,7 @@ public class MemberBean {
 	private int game2_score = 0;
 	private int game3_score = 0;
 	private int point = 0;
+	private ArrayList<Object[]> item = new ArrayList<Object[]>();
 
 	public String getId() {
 		return id;
@@ -48,18 +55,26 @@ public class MemberBean {
 		this.game3_score = game3_score;
 	}
 
-	public int point() {
+	public int getPoint() {
 		return point;
 	}
 
-	public void point(int point) {
+	public void setPoint(int point) {
 		this.point = point;
+	}
+
+	public ArrayList<Object[]> getItem() {
+		return item;
+	}
+
+	public void setItem(ArrayList<Object[]> item) {
+		this.item = item;
 	}
 
 	@Override
 	public String toString() {
 		return "Member [id=" + id + ", pw=" + pw + ", game1_score=" + game1_score + ", game2_score=" + game2_score
-				+ ", game3_score=" + game3_score + "point=" + point + "]";
+				+ ", game3_score=" + game3_score + "point=" + point + "item=" + item + "]";
 	}
 
 }

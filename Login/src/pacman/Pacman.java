@@ -17,6 +17,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -96,6 +97,7 @@ public class Pacman extends JFrame {
 	private String id;
 	private int hiscore;
 	private int point;
+	
 	// 현재 점수
 	private int score = 0;
 
@@ -104,7 +106,7 @@ public class Pacman extends JFrame {
 		this.id = id;
 		hiscore = MemberDao.selectGameScore(id, 2);
 		point = MemberDao.selectPoint(id);
-
+		MemberDao.selectGameItem(id, 2);
 		this.setLayout(new BorderLayout());
 		this.getContentPane().setBackground(Color.WHITE);
 		this.setBounds(100, 100, FrameWidth, FrameHeight);
