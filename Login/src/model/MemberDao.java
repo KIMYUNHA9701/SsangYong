@@ -266,6 +266,56 @@ public class MemberDao {
 			}
 		}
 	}
+	
+	public static TableModel injectInventory(TableModel table,String id) {
+		Object[][] data = null;
+		String[] item = null;
+		String sql = "SELECT ID,ITEM,GAMENUM,COUNT FROM MEMBER_ITEM WHERE = ?";
+		Connection con = Serviceutil.getInstance().getconnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ResultSetMetaData rsmd = null;
+		int r_count = 0;
+		int c_count = 0;
+		try {
+			pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = pstmt.executeQuery();
+			rs.last();
+			r_count = rs.getRow();
+			rs.beforeFirst();
+			rsmd = rs.getMetaData();
+			c_count = rsmd.getColumnCount();
+			data = new Object[r_count][c_count];
+			item = new String[c_count];
+			for (int i = 1; i <= c_count; i++) {
+				item[i - 1] = rsmd.getColumnName(i);
+			}
+
+			int i = 0;
+			while (rs.next()) {
+				data[i][0] = rs.getString(1);
+				data[i][1] = rs.getString(2);
+				data[i][2] = rs.getInt(3);
+				data[i][3] = rs.getInt(4);
+				i++;
+			}
+			table.setData(data);
+			table.setItem(item);
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		}
+		return table;
+	}
+	
 
 	public static int selectPoint(String id) {
 		String sql = "SELECT POINT FROM MEMBER WHERE ID = ? ";
