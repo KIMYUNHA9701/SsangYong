@@ -19,8 +19,8 @@ public class GameFrame extends JFrame implements ActionListener {
 
 	JPanel panel;
 	ImageIcon icon;
-	RoundedButton[] buttons = new RoundedButton[5];
-	String[] strBtns = { "FindDifference", "Pacman", "2048", "Member Info", "LogOut" };
+	String[] strBtns = { "FindDifference", "Pacman", "2048", "Member Info", "Store", "LogOut" };
+	RoundedButton[] buttons = new RoundedButton[strBtns.length];
 	String sessionId = null;
 
 	@Override
@@ -28,18 +28,15 @@ public class GameFrame extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		if (e.getSource() == buttons[0]) {
 			new GamePlay(sessionId);
-		}
-
-		if (e.getSource() == buttons[1]) {
+		} else if (e.getSource() == buttons[1]) {
 			new Pacman(sessionId);
-		}
-		if (e.getSource() == buttons[2]) {
+		} else if (e.getSource() == buttons[2]) {
 			new Puzzle(sessionId);
-		}
-		if (e.getSource() == buttons[3]) {
+		} else if (e.getSource() == buttons[3]) {
 			new MemberFrame(sessionId);
-		}
-		if (e.getSource() == buttons[4]) {
+		} else if (e.getSource() == buttons[4]) {
+			new StoreFrame(sessionId);
+		} else if (e.getSource() == buttons[5]) {
 			new LoginFrame();
 			GameFrame.this.dispose();
 		}
