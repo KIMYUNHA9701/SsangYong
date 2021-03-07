@@ -80,7 +80,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 		};
 
 		label = new JLabel("BINI GAME");
-		label.setBounds(10, 50, 250, 50);
+		label.setBounds(15, 50, 250, 50);
 		label.setHorizontalAlignment(JLabel.CENTER);
 		label.setFont(new Font("title", Font.BOLD, 25));
 		tfId = new JTextField(20);
@@ -88,7 +88,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 		loginBtn = new RoundedButton("Login");
 		signUpBtn = new RoundedButton("Sign Up");
 		accountBtn = new RoundedButton("Account");
-		tfId.setBounds(10, 120, 250, 30);
+		tfId.setBounds(15, 120, 250, 30);
 		tfId.registerKeyboardAction(this, "login", KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
 				JComponent.WHEN_FOCUSED);
 		tfId.setText("  아이디");
@@ -120,7 +120,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 			}
 
 		});
-		passwordField.setBounds(10, 160, 250, 30);
+		passwordField.setBounds(15, 160, 250, 30);
 		passwordField.registerKeyboardAction(this, "login", KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
 				JComponent.WHEN_FOCUSED);
 		passwordField.setEchoChar((char) 0); // 글자가 보이게 표시
@@ -157,9 +157,9 @@ public class LoginFrame extends JFrame implements ActionListener {
 			}
 
 		});
-		loginBtn.setBounds(10, 210, 250, 30);
-		signUpBtn.setBounds(10, 330, 250, 30);
-		accountBtn.setBounds(10, 370, 250, 30);
+		loginBtn.setBounds(15, 210, 250, 30);
+		signUpBtn.setBounds(15, 330, 250, 30);
+		accountBtn.setBounds(15, 370, 250, 30);
 		loginBtn.setActionCommand("login");
 		loginBtn.addActionListener(this);
 
