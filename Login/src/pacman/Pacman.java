@@ -106,7 +106,8 @@ public class Pacman extends JFrame {
 		this.getContentPane().setBackground(Color.WHITE);
 		this.setBounds(100, 100, FrameWidth, FrameHeight);
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setResizable(false); // 창크기 조절 불가능
 
 		initPanel();
@@ -120,12 +121,6 @@ public class Pacman extends JFrame {
 		pb.setValue(time);
 		this.add("South", pb);
 		this.add("Center", pan);
-		// close 이벤트
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
 		// 키보드 이벤트
 		this.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
