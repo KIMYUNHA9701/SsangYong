@@ -110,11 +110,6 @@ public class Pacman extends JFrame {
 		hiscore = MemberDao.selectGameScore(id, 2);
 		point = MemberDao.selectPoint(id);
 		itemlist = MemberDao.selectGameItem(id, 2);
-		System.out.println(itemlist.size());
-		System.out.println(itemlist.get(0)[0]);
-		System.out.println(itemlist.get(0)[1]);
-		System.out.println(itemlist.get(1)[0]);
-		System.out.println(itemlist.get(1)[1]);
 		slowcnt = (int) itemlist.get(0)[1];
 		fastcnt = (int) itemlist.get(1)[1];
 
@@ -183,12 +178,12 @@ public class Pacman extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if (slowcnt <= 0) {
-					System.out.println("¾ÈµÅ");
+					slowBtn.setEnabled(false);
 				} else {
 					slow = true;
 					slowTime = time;
 					slowcnt--;
-					slowBtn.setText(" "+slowcnt);
+					slowBtn.setText("slow "+slowcnt);
 				}
 			}
 		});
@@ -198,12 +193,12 @@ public class Pacman extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if (fastcnt <= 0) {
-					System.out.println("¾ÈµÅ");
+					fastBtn.setEnabled(false);
 				} else {
 					fast = true;
 					fastTime = time;
 					fastcnt--;
-					fastBtn.setText(" "+fastcnt);
+					fastBtn.setText("fast "+fastcnt);
 				}
 			}
 		});
@@ -411,8 +406,10 @@ public class Pacman extends JFrame {
 				}
 				try {
 					if (fast == true) {
+						fastBtn.setEnabled(false);
 						Thread.sleep(50);
 						if (time == fastTime - 10) {
+							fastBtn.setEnabled(true);
 							fast = false;
 						}
 					} else {
@@ -480,8 +477,10 @@ public class Pacman extends JFrame {
 
 				try {
 					if (slow == true) {
+						slowBtn.setEnabled(false);
 						Thread.sleep(400);
 						if (time == slowTime - 10) {
+							slowBtn.setEnabled(true);
 							slow = false;
 						}
 					} else {

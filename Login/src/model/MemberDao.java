@@ -333,19 +333,16 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<Object[]> itemlist = new ArrayList<Object[]>();
-		Object[] item = new Object[2];
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setInt(2, order);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
+				Object[] item = new Object[2];
 				item[0] = rs.getString(1);
 				item[1] = rs.getInt(2);
 				itemlist.add(item);
-				System.out.println(item[0]);
-				System.out.println(item[1]);
-				System.out.println(Arrays.toString(item));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
