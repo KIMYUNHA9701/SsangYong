@@ -151,7 +151,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 					passwordField.setForeground(Color.GRAY);
 				} else {
 					passwordField.setEchoChar('*');
-					passwordField.setText(tfId.getText());
+					passwordField.setText(passwordField.getText());
 					passwordField.setForeground(Color.BLACK);
 				}
 			}
@@ -203,4 +203,9 @@ public class LoginFrame extends JFrame implements ActionListener {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+	
+	
+	 public static void main(String[] args) {
+		new LoginFrame();
+	}
 }
