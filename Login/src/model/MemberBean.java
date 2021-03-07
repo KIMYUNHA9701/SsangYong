@@ -13,7 +13,7 @@ public class MemberBean {
 	private int game2_score = 0;
 	private int game3_score = 0;
 	private int point = 0;
-	private ArrayList<Object[]> item = new ArrayList<Object[]>();
+	private ArrayList<Object[]> itemlist = new ArrayList<Object[]>();
 
 	public String getId() {
 		return id;
@@ -63,18 +63,18 @@ public class MemberBean {
 		this.point = point;
 	}
 
-	public ArrayList<Object[]> getItem() {
-		return item;
+	public ArrayList<Object[]> getItemlist() {
+		return itemlist;
 	}
 
-	public void setItem(ArrayList<Object[]> item) {
-		this.item = item;
+	public void setItemlist(ArrayList<Object[]> itemlist) {
+		this.itemlist = itemlist;
 	}
 
 	@Override
 	public String toString() {
 		return "Member [id=" + id + ", pw=" + pw + ", game1_score=" + game1_score + ", game2_score=" + game2_score
-				+ ", game3_score=" + game3_score + "point=" + point + "item=" + item + "]";
+				+ ", game3_score=" + game3_score + "point=" + point + "item=" + itemlist + "]";
 	}
 
 }
