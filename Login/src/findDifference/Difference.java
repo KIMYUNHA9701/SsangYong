@@ -10,6 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
 import model.MemberDao;
+import view.Main;
 
 public class Difference extends JFrame implements ActionListener {
 
@@ -29,7 +34,9 @@ public class Difference extends JFrame implements ActionListener {
     JProgressBar jpbar;
 	JPanel jPanelscore, jPanelbar, jPanelbutton, jPanelimg;
 	RoundedButton restart, exit;
-
+	boolean threadOut = false;
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -37,13 +44,16 @@ public class Difference extends JFrame implements ActionListener {
     	jpbar.setValue(0);
     	DifferenceDao.getDifferenceDao().dataAllReset();
     	this.dispose();
+    	threadOut = true; 
     	new Difference();
     }
 	if(e.getSource()==exit)	{
-			this.dispose();
+		this.dispose();
+		threadOut = true;
+			
 	  }
+	
 	}
-
 	public void view() {
 
 		Mouse mouse = new Mouse();
@@ -104,9 +114,18 @@ public class Difference extends JFrame implements ActionListener {
 								 System.out.println("clear: "+DifferenceDao.getDifferenceDao().clear);//
 								 DifferenceDao.gameOverCheck = true; 
 								 viewDispose();
+								 
 								 }	
+								 
 							}
+							 
+							 if(threadOut ==true) { //쓰레드 종료
+								 return;
+								
+							 }
 						 } 
+					
+			
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -174,7 +193,16 @@ public class Difference extends JFrame implements ActionListener {
 		this.setBounds(100, 100, 984, 600);
 		this.setVisible(true);
 		this.setResizable(false);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				dispose();
+				threadOut = true;
+			}
+		
+		});
 	}
 
 	public void addScore() {
@@ -195,5 +223,13 @@ public class Difference extends JFrame implements ActionListener {
 
 	public static int gethiScore() {
 		return hiscore; 
+		
+	
 	}
+	
+	public static void main(String[] args) {
+		new Difference();
+		
+	}
+	
 }
