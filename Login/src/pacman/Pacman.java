@@ -109,10 +109,8 @@ public class Pacman extends JFrame {
 		this.id = id;
 		hiscore = MemberDao.selectGameScore(id, 2);
 		point = MemberDao.selectPoint(id);
-<<<<<<< HEAD
 		System.out.println("member!!!");
 		MemberDao.selectGameItem(id, 2);
-=======
 		itemlist = MemberDao.selectGameItem(id, 2);
 		System.out.println(itemlist.size());
 		System.out.println(itemlist.get(0)[0]);
@@ -122,7 +120,6 @@ public class Pacman extends JFrame {
 		slowcnt = (int) itemlist.get(0)[1];
 		fastcnt = (int) itemlist.get(1)[1];
 
->>>>>>> branch 'MiniGame' of https://github.com/KIMYUNHA9701/SsangYong.git
 		this.setLayout(new BorderLayout());
 		this.getContentPane().setBackground(Color.WHITE);
 		this.setBounds(100, 100, FrameWidth, FrameHeight);
