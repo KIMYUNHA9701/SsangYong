@@ -109,8 +109,6 @@ public class Pacman extends JFrame {
 		this.id = id;
 		hiscore = MemberDao.selectGameScore(id, 2);
 		point = MemberDao.selectPoint(id);
-		System.out.println("member!!!");
-		MemberDao.selectGameItem(id, 2);
 		itemlist = MemberDao.selectGameItem(id, 2);
 		slowcnt = (int) itemlist.get(0)[1];
 		fastcnt = (int) itemlist.get(1)[1];
@@ -564,6 +562,8 @@ public class Pacman extends JFrame {
 	public void resultPoint() {
 		point += (int) (score / 10);
 		MemberDao.updatePoint(id, point);
+		MemberDao.updateGameItem(id, 2, "fast", fastcnt);
+		MemberDao.updateGameItem(id, 2, "slow", slowcnt);
 	}
 
 	// 쓰레드시작

@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -9,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import findDifference.GamePlay;
@@ -18,8 +20,9 @@ import pacman.Pacman;
 public class GameFrame extends JFrame implements ActionListener {
 
 	JPanel panel;
+	JLabel titleLabel;
 	ImageIcon icon;
-	String[] strBtns = { "FindDifference", "Pacman", "2048", "Member Info", "Store", "LogOut" };
+	String[] strBtns = { "FindDifference", "Pacman", "2048", "SCORE", "Store", "LogOut" };
 	RoundedButton[] buttons = new RoundedButton[strBtns.length];
 	String sessionId = null;
 
@@ -49,11 +52,19 @@ public class GameFrame extends JFrame implements ActionListener {
 		icon.setImage(iconImg);
 	}
 
+	public void labelInit() {
+		titleLabel = new JLabel("GAME");
+		titleLabel.setBounds(50, 30, 200, 30);
+		titleLabel.setFont(new Font("title", Font.BOLD, 30));
+		titleLabel.setHorizontalAlignment(JLabel.CENTER);
+		panel.add(titleLabel);
+	}
+
 	public void buttonInit() {
 		for (int i = 0; i < buttons.length; i++) {
 			buttons[i] = new RoundedButton(strBtns[i]);
 			buttons[i].addActionListener(this);
-			buttons[i].setBounds(50, 80 + (i * 60), 200, 30);
+			buttons[i].setBounds(50, 100 + (i * 40), 200, 30);
 			panel.add(buttons[i]);
 		}
 	}
@@ -66,6 +77,7 @@ public class GameFrame extends JFrame implements ActionListener {
 				g.drawImage(icon.getImage(), 0, 0, null);
 			}
 		};
+		labelInit();
 		buttonInit();
 		this.add(panel);
 	}
