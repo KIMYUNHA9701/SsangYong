@@ -24,7 +24,7 @@ public class SignUpFrame extends JFrame{
 	ImageIcon icon;
 	JTextField tfId;
 	JPasswordField tfPw;
-	JButton signUpBtn,homeBtn;
+	RoundedButton signUpBtn,homeBtn;
 	
 	public void resetField() {
 		tfId.setText("");
@@ -32,7 +32,7 @@ public class SignUpFrame extends JFrame{
 	}
 	
 	public void backImage() {
-		icon = new ImageIcon("Image\\minigame.jpg");
+		icon = new ImageIcon("Image\\binigame.jpg");
 		Image iconImg = icon.getImage();
 		iconImg = iconImg.getScaledInstance(300, 500, Image.SCALE_SMOOTH);
 		icon.setImage(iconImg);
@@ -51,8 +51,8 @@ public class SignUpFrame extends JFrame{
 		JLabel label_pw = new JLabel("PW");
 		tfId = new JTextField(20);
 		tfPw = new JPasswordField(20); 
-		signUpBtn = new JButton("Sign Up");
-		homeBtn = new JButton("Home");
+		signUpBtn = new RoundedButton("Sign Up");
+		homeBtn = new RoundedButton("Home");
 		
 		label_id.setBounds(10,100,250,30);
 		label_id.setForeground(Color.white);

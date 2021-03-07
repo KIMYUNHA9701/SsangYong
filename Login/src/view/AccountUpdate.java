@@ -24,7 +24,7 @@ public class AccountUpdate extends JFrame {
 	ImageIcon icon;
 	JTextField tfId;
 	JPasswordField tfPw,tfUpPw;
-	JButton updateBtn,deleteBtn,homeBtn;
+	RoundedButton updateBtn,deleteBtn,homeBtn;
 	
 	public void resetField() {
 		tfId.setText("");
@@ -33,7 +33,7 @@ public class AccountUpdate extends JFrame {
 	}
 	
 	public void backImage() {
-		icon = new ImageIcon("Image\\minigame.jpg");
+		icon = new ImageIcon("Image\\binigame.jpg");
 		Image iconImg = icon.getImage();
 		iconImg = iconImg.getScaledInstance(300, 500, Image.SCALE_SMOOTH);
 		icon.setImage(iconImg);
@@ -54,9 +54,9 @@ public class AccountUpdate extends JFrame {
 		tfId = new JTextField(20);
 		tfPw = new JPasswordField(20); 
 		tfUpPw = new JPasswordField(20); 
-		updateBtn = new JButton("Update");
-		deleteBtn = new JButton("Delete Account");
-		homeBtn = new JButton("Home");
+		updateBtn = new RoundedButton("Update");
+		deleteBtn = new RoundedButton("Delete Account");
+		homeBtn = new RoundedButton("Home");
 		
 		label_id.setBounds(10,50,250,30);
 		label_id.setForeground(Color.white);

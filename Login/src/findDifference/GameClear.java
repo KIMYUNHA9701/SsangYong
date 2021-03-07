@@ -18,7 +18,7 @@ public class GameClear extends JFrame implements ActionListener {
 	
 	JLabel text, score;
 	JPanel jPanel, jPanel2, jPanel3;
-	JButton restart, exit;
+	RoundedButton restart, exit;
 	String id;
 
 	@Override
@@ -45,9 +45,9 @@ public class GameClear extends JFrame implements ActionListener {
 		jPanel.setBackground(new Color(255,204,102));
 
 		jPanel2 = new JPanel(new FlowLayout());
-		jPanel2.add(restart = new JButton("restart"));
+		jPanel2.add(restart = new RoundedButton("restart"));
 		restart.addActionListener(this);
-		jPanel2.add(exit = new JButton("exit"));
+		jPanel2.add(exit = new RoundedButton("exit"));
 		exit.addActionListener(this);
 		jPanel2.setBackground(new Color(255,204,102));
 
