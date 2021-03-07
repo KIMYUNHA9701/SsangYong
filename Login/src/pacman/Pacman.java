@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -93,7 +95,7 @@ public class Pacman extends JFrame {
 	// dao를 통해 받아온 값 저장하는 변수
 	private String id;
 	private int hiscore;
-
+	private int point;
 	// 현재 점수
 	private int score = 0;
 
@@ -101,12 +103,12 @@ public class Pacman extends JFrame {
 		// dao에서 받아오기
 		this.id = id;
 		hiscore = MemberDao.selectGameScore(id, 2);
+		point = MemberDao.selectPoint(id);
 
 		this.setLayout(new BorderLayout());
 		this.getContentPane().setBackground(Color.WHITE);
 		this.setBounds(100, 100, FrameWidth, FrameHeight);
 		this.setVisible(true);
-//		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setResizable(false); // 창크기 조절 불가능
 
@@ -146,20 +148,17 @@ public class Pacman extends JFrame {
 	public void initPanel() {
 		panel1 = new JPanel();
 		panel1.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 10));
-		panel1.setLayout(new GridLayout(1, 5, 10, 10));
 		panel1.setBackground(new Color(0xbbada0));
+		panel1.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+
 		label[0] = new JLabel(labelText[0]);
 		label[1] = new JLabel(labelText[1] + hiscore);
 		label[2] = new JLabel(labelText[2] + score);
 
 		label[0].setFont(new Font(labelText[0], Font.BOLD, 30));
 
-		for (int i = 1; i < 3; i++) {
-			label[i].setHorizontalAlignment(JLabel.RIGHT);
-			label[i].setBackground(new Color(0xbbada0));
-			label[i].setPreferredSize(new Dimension(this.WIDTH, 40));
-			label[i].setOpaque(true);
-		}
 		slowBtn = new RoundedButton("slow");
 		slowBtn.setFocusable(false);
 		fastBtn = new RoundedButton("fast");
@@ -184,11 +183,30 @@ public class Pacman extends JFrame {
 			}
 		});
 
-		panel1.add(label[0]);
-		panel1.add(label[1]);
-		panel1.add(label[2]);
-		panel1.add(slowBtn);
-		panel1.add(fastBtn);
+		gbc.weightx = 0.5;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		panel1.add(label[0], gbc);
+
+		gbc.weightx = 0.3;
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		panel1.add(label[1], gbc);
+
+		gbc.weightx = 0.3;
+		gbc.gridx = 2;
+		gbc.gridy = 0;
+		panel1.add(label[2], gbc);
+
+		gbc.weightx = 0.1;
+		gbc.gridx = 3;
+		gbc.gridy = 0;
+		panel1.add(slowBtn, gbc);
+
+		gbc.weightx = 0.1;
+		gbc.gridx = 4;
+		gbc.gridy = 0;
+		panel1.add(fastBtn, gbc);
 
 		this.add("North", panel1);
 	}
@@ -491,6 +509,7 @@ public class Pacman extends JFrame {
 				}
 			}
 			resultScore();
+			resultPoint();
 			restart();
 		}
 
@@ -514,6 +533,11 @@ public class Pacman extends JFrame {
 		if (hiscore < score)
 			hiscore = score;
 		MemberDao.updateGameScore(id, hiscore, 2);
+	}
+
+	public void resultPoint() {
+		point = (int) (score / 10);
+		MemberDao.updatePoint(id, point);
 	}
 
 	// 쓰레드시작

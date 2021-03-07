@@ -40,8 +40,8 @@ public class MemberDao {
 	}
 	
 	public static void addMember(MemberBean bean) {
-		String sql = "INSERT INTO MEMBER(ID,PW,GAME1_SCORE,GAME2_SCORE,GAME3_SCORE)" + 
-	     " VALUES(?,?,0,0,0) ";
+		String sql = "INSERT INTO MEMBER(ID,PW,GAME1_SCORE,GAME2_SCORE,GAME3_SCORE,POINT)" + 
+	     " VALUES(?,?,0,0,0,0) ";
 		Connection con =  Serviceutil.getInstance().getconnection();
 		PreparedStatement pstmt = null;
 		try {
@@ -150,7 +150,7 @@ public class MemberDao {
 	public static TableModel injectTable(TableModel table) {
 		Object[][] data = null;
 		String[] item = null;
-		String sql = "SELECT ID,GAME1_SCORE,GAME2_SCORE,GAME3_SCORE FROM MEMBER";
+		String sql = "SELECT ID,GAME1_SCORE,GAME2_SCORE,GAME3_SCORE,POINT FROM MEMBER";
 		Connection con = Serviceutil.getInstance().getconnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -177,6 +177,7 @@ public class MemberDao {
 				data[i][1] = rs.getInt(2);
 				data[i][2] = rs.getInt(3);
 				data[i][3] = rs.getInt(4);
+				data[i][4] = rs.getInt(5);
 				i++;
 			}
 			table.setData(data);
@@ -232,6 +233,62 @@ public class MemberDao {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1,hiscore);
+			pstmt.setString(2,id);
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			try {
+				con.rollback();
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		}finally {
+			try {
+				if(con!=null) con.close();
+				if(pstmt!=null) pstmt.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		}
+	}
+	
+	public static int selectPoint(String id) {
+		String sql = "SELECT POINT FROM MEMBER WHERE ID = ? ";
+		Connection con = Serviceutil.getInstance().getconnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int point = 0;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				point = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			try {
+				if(con!=null) con.close();
+				if(pstmt!=null) pstmt.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		}
+		return point;
+	}
+	
+	public static void updatePoint(String id,int point) {
+		String sql = "UPDATE MEMBER SET POINT = ? WHERE ID = ? ";
+		Connection con =  Serviceutil.getInstance().getconnection();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1,point);
 			pstmt.setString(2,id);
 			pstmt.executeUpdate();
 			con.commit();
