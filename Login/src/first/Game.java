@@ -308,6 +308,7 @@ public class Game extends JFrame{
 		menuButton[0].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				MemberDao.updatePoint(sessionId,MemberDao.selectPoint(sessionId) + (int)(score / 10));
 				writehiScore();
 				System.out.println("(after)hiscore : " + hiscore);
 				MemberDao.updateGameScore(sessionId, hiscore,3);
@@ -452,6 +453,7 @@ public class Game extends JFrame{
 
 			@Override
 			public void windowClosing(WindowEvent arg0) {
+				MemberDao.updatePoint(sessionId,MemberDao.selectPoint(sessionId) + (int)(score / 10));
 				writehiScore();
 				MemberDao.updateGameScore(sessionId, hiscore,3);
 				new Puzzle(sessionId);

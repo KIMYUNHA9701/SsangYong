@@ -95,7 +95,7 @@ public class StoreFrame extends JFrame implements ActionListener {
 		this.setLayout(new FlowLayout());
 		this.setVisible(true);
 		this.setResizable(false);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 }

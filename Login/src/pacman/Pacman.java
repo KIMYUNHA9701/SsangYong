@@ -106,6 +106,7 @@ public class Pacman extends JFrame {
 		this.id = id;
 		hiscore = MemberDao.selectGameScore(id, 2);
 		point = MemberDao.selectPoint(id);
+		System.out.println("member!!!");
 		MemberDao.selectGameItem(id, 2);
 		this.setLayout(new BorderLayout());
 		this.getContentPane().setBackground(Color.WHITE);
