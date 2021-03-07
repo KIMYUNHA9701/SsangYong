@@ -361,16 +361,16 @@ public class MemberDao {
 	}
 	
 	public static void updateGameItem(String id, int order, String itemName, int count) {
-		String sql = "UPDATE MEMBER_ITEM SET ITEM = ?, COUNT = ? WHERE ID = ? AND GAMENUM=? ";
+		String sql = "UPDATE SET COUNT = ? FROM MEMBER_ITEM WHERE ID = ? AND GAMENUM=? AND ITEM = ? ";
 		Connection con = Serviceutil.getInstance().getconnection();
 		PreparedStatement pstmt = null;
 		try {
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, itemName);
-			pstmt.setInt(2, count);
-			pstmt.setString(3, id);
-			pstmt.setInt(4, order);
+			pstmt.setInt(1, count);
+			pstmt.setString(2, id);
+			pstmt.setInt(3, order);
+			pstmt.setString(4, itemName);
 			pstmt.executeUpdate();
 			con.commit();
 		} catch (Exception e) {
