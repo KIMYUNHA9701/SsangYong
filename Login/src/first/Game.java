@@ -15,6 +15,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -48,6 +49,8 @@ public class Game extends JFrame{
 	Tile[][] imsi;
 	int imsiScore;
 	String sessionId = null;
+	
+	int item = 0;
 	
 	public void copyTable() {
 		for (int i = 0; i < table.length; i++) {
@@ -320,6 +323,8 @@ public class Game extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Back");
+				if(item < 1) return;
+				item--;
 				backDrawTableButton();
 				pan.repaint();
 				Game.this.requestFocusInWindow();
@@ -392,6 +397,8 @@ public class Game extends JFrame{
 	public Game(int size,String id) {
 		super("Game");
 		sessionId = id;
+		item = 1;
+//		item = (int)((ArrayList)MemberDao.selectGameItem(id, 3)).get(0);
 		hiscore = MemberDao.selectGameScore(sessionId,3);
 		System.out.println("hiscore : " + hiscore);
 		initPanel(Game.size=size);
