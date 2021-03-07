@@ -38,11 +38,16 @@ public class StoreFrame extends JFrame implements ActionListener {
 
 		} else if (e.getSource() == buttons[2]) {
 			point -= 20;
+			pointLabel.setText("Point : " + point);
 			slowcnt++;
+			System.out.println("slowcnt"+slowcnt);
+			MemberDao.updatePoint(id, point);
 			MemberDao.updateGameItem(id, 2, "slow", slowcnt);
 		} else if (e.getSource() == buttons[3]) {
 			point -= 20;
+			pointLabel.setText("Point : " + point);
 			fastcnt++;
+			MemberDao.updatePoint(id, point);
 			MemberDao.updateGameItem(id, 2, "fast", fastcnt);
 		} else if (e.getSource() == buttons[4]) {
 
@@ -97,8 +102,8 @@ public class StoreFrame extends JFrame implements ActionListener {
 		this.id = id;
 		point = MemberDao.selectPoint(id);
 		itemlist = MemberDao.selectGameItem(id, 2);
-		slowcnt = (int) itemlist.get(0)[1];
-		fastcnt = (int) itemlist.get(1)[1];
+		fastcnt = (int) itemlist.get(0)[1];
+		slowcnt = (int) itemlist.get(1)[1];
 
 		init();
 		this.setBounds(100, 100, 300, 500);
