@@ -50,7 +50,8 @@ public class Game extends JFrame{
 	int imsiScore;
 	String sessionId = null;
 	
-	int item = 0;
+	ArrayList<Object[]> itemList = new ArrayList<Object[]>();
+	int itemBack = 0;
 	
 	public void copyTable() {
 		for (int i = 0; i < table.length; i++) {
@@ -322,12 +323,12 @@ public class Game extends JFrame{
 		menuButton[1].addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Game.this.requestFocusInWindow();
 				System.out.println("Back");
-				if(item < 1) return;
-				item--;
+				if(itemBack < 1) return;
+				itemBack--;
 				backDrawTableButton();
 				pan.repaint();
-				Game.this.requestFocusInWindow();
 			}
 		});
 		menuButton[2].addActionListener(new ActionListener() {
@@ -397,8 +398,8 @@ public class Game extends JFrame{
 	public Game(int size,String id) {
 		super("Game");
 		sessionId = id;
-		item = 1;
-//		item = (int)((ArrayList)MemberDao.selectGameItem(id, 3)).get(0);
+		itemList = MemberDao.selectGameItem(id, 3); 
+		itemBack = (int)itemList.get(0)[1]; // 돌아가기 아이템 개수
 		hiscore = MemberDao.selectGameScore(sessionId,3);
 		System.out.println("hiscore : " + hiscore);
 		initPanel(Game.size=size);

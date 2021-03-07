@@ -359,5 +359,38 @@ public class MemberDao {
 		}
 		return itemlist;
 	}
+	
+	public static void updateGameItem(String id, int order, String itemName, int count) {
+		String sql = "UPDATE SET ITEM = ?, COUNT = ? FROM MEMBER_ITEM WHERE ID = ? AND GAMENUM=? ";
+		Connection con = Serviceutil.getInstance().getconnection();
+		PreparedStatement pstmt = null;
+		try {
+			con.setAutoCommit(false);
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, itemName);
+			pstmt.setInt(2, count);
+			pstmt.setString(3, id);
+			pstmt.setInt(4, order);
+			pstmt.executeUpdate();
+			con.commit();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			try {
+				con.rollback();
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		} finally {
+			try {
+				if (con != null)
+					con.close();
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		}
+	}
 
 }
