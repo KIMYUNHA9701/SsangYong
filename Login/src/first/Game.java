@@ -316,6 +316,7 @@ public class Game extends JFrame{
 				writehiScore();
 				System.out.println("(after)hiscore : " + hiscore);
 				MemberDao.updateGameScore(sessionId, hiscore,3);
+				MemberDao.updateGameItem(sessionId, 3, "back", itemBack);
 				new Puzzle(sessionId);
 				dispose();
 			}
@@ -464,6 +465,7 @@ public class Game extends JFrame{
 				MemberDao.updatePoint(sessionId,MemberDao.selectPoint(sessionId) + (int)(score / 10));
 				writehiScore();
 				MemberDao.updateGameScore(sessionId, hiscore,3);
+				MemberDao.updateGameItem(sessionId, 3, "back", itemBack);
 				new Puzzle(sessionId);
 				Game.this.dispose();
 			}

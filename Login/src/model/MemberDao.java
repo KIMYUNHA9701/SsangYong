@@ -361,7 +361,7 @@ public class MemberDao {
 	}
 	
 	public static void updateGameItem(String id, int order, String itemName, int count) {
-		String sql = "UPDATE SET ITEM = ?, COUNT = ? FROM MEMBER_ITEM WHERE ID = ? AND GAMENUM=? ";
+		String sql = "UPDATE MEMBER_ITEM SET ITEM = ?, COUNT = ? WHERE ID = ? AND GAMENUM=? ";
 		Connection con = Serviceutil.getInstance().getconnection();
 		PreparedStatement pstmt = null;
 		try {
