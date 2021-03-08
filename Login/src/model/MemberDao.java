@@ -75,8 +75,8 @@ public class MemberDao {
 	}
 
 	public static void addMemberItem(String id) {
-		String[] item = { "slow", "fast", "back" };
-		int[] gamenum = { 2, 2, 3 };
+		String[] item = { "timeReset", "slow", "fast", "back" };
+		int[] gamenum = { 1, 2, 2, 3 };
 		//이거 Itemtable을 불러와서 넣는 걸로 수정해야함
 		for (int i = 0; i < item.length; i++) {
 			String sql2 = "INSERT INTO MEMBER_ITEM(ID,ITEM,GAMENUM,COUNT) VALUES(?,?,?,0)";

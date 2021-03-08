@@ -19,7 +19,7 @@ public class StoreFrame extends JFrame implements ActionListener {
 	JPanel panel;
 	JLabel titleLabel, pointLabel;
 	ImageIcon icon;
-	String[] strBtns = { "FindDifference", "FindDifference", "Pacman - slow [20]", "Pacman - fast [20]",
+	String[] strBtns = { "FindDifference - timeReset [20]", "FindDifference", "Pacman - slow [20]", "Pacman - fast [20]",
 			"2048 - back [20]", "Inventory" };
 	RoundedButton[] buttons = new RoundedButton[strBtns.length];
 	private String id;
@@ -28,12 +28,21 @@ public class StoreFrame extends JFrame implements ActionListener {
 
 	private int slowcnt;
 	private int fastcnt;
+	
+	private int timeResetCnt;
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource() == buttons[0]) {
-
+		if (e.getSource() == buttons[0]) { //
+			if (point < 20)
+				return;
+			point -= 20;
+			pointLabel.setText("Point : " + point);
+			timeResetCnt++;
+			MemberDao.updatePoint(id, point);
+			MemberDao.updateGameItem(id, 1, "timeReset", timeResetCnt);
+			
 		} else if (e.getSource() == buttons[1]) {
 
 		} else if (e.getSource() == buttons[2]) {

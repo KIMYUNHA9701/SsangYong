@@ -3,6 +3,8 @@ package findDifference;
 import java.awt.Point;
 import javax.swing.JOptionPane;
 
+import model.MemberDao;
+
 
 public class DifferenceDao  {
 	
@@ -17,9 +19,13 @@ public class DifferenceDao  {
 	static int clear = 0; //0일 때 gameover, 1일 때 gameclear
 	private static DifferenceDao dDao;
 	static String id;
+	private int gamePoint; //현재 유저의 게임 포인트 저장할 변수
+	
 	
 	public DifferenceDao(String id) {
 		DifferenceDao.id = id;
+		gamePoint = MemberDao.selectPoint(id);
+		
 	}
 	
 	public static void setId(String id) {
@@ -83,7 +89,9 @@ public class DifferenceDao  {
 			dataReset();
 			if(count ==5) {  //정답을 모두 찾은 스테이지가 마지막 스테이지일 시, if문 실행 
 				gameClearCheck = true;
+				addPoint();
 				new GameClear(id);
+				dataAllReset();
 				return;
 			}else {   //정답을 모두 찾은 스테이지가 마지막 스테이지가 아닐 시, 실행 
 		   //다음 스테이지로 가기 전, 다음스테이지에 해당하는 이미지와 정답좌표로  세팅
@@ -99,6 +107,16 @@ public class DifferenceDao  {
 	 }
 	
 
+	public void addPoint() { // 게임 종료 시, 흭득한 게임점수 나누기 100 만큼 포인트 추가
+		gamePoint += (int) (member.getGamescore()/ 100);
+		MemberDao.updatePoint(id,gamePoint);
+			
+		}
+	
+	
+	
+	
+	
 	public  void dataReset() { //다음 스테이지로 넘어가기전 리셋해야 할 데이타 리셋
 		
 		member.setFound1(false);

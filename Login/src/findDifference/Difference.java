@@ -13,10 +13,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
@@ -32,12 +34,15 @@ public class Difference extends JFrame implements ActionListener {
 	JLabel score;
     JProgressBar jpbar;
 	JPanel jPanelscore, jPanelbar, jPanelbutton, jPanelimg;
-	RoundedButton restart, exit;
+	RoundedButton restart, exit, timeReset;
 	boolean threadOut = false;
 	static boolean Wrong = false;
 	static Point point; //클릭 좌표
-	int count =0;
+	int count =0; //프로그레스바 제어 변수
+	int a = 0;    //프로그레스바 제어 변수
 	
+	private int timeResetCnt;//현재 유저의 timeReset게임 아이템 수 저장할 변수
+	ArrayList<Object[]> itemlist = new ArrayList<Object[]>();
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -54,6 +59,20 @@ public class Difference extends JFrame implements ActionListener {
 		threadOut = true;
 			
 	  }
+	if(e.getSource()==timeReset)	{ //시간 초기화 아이템 사용
+		if(timeResetCnt<=0) {
+		 JOptionPane.showMessageDialog(null, "사용 가능한 아이템이 없습니다.");
+		}else {
+		count = 0;
+		a = 0;
+		jpbar.setForeground(new Color(0xbbada0));
+		timeResetCnt--;
+		MemberDao.updateGameItem(DifferenceDao.id, 1, "timeReset", timeResetCnt);
+		timeReset.setText("timeReset " + timeResetCnt);
+	
+		}
+	  }
+	
 	
 	}
 	public void view() {
@@ -82,11 +101,14 @@ public class Difference extends JFrame implements ActionListener {
 		score.setFont(new Font("굴림", Font.BOLD, 30));
 
 		jPanelbutton = new JPanel(new FlowLayout());
-		jPanelbutton.add(restart = new RoundedButton("restart"));
 		jPanelbutton.setBackground(new Color(0xbbada0));
+		jPanelbutton.add(timeReset = new RoundedButton("timeReset " + timeResetCnt ));
+		timeReset.addActionListener(this);
+		jPanelbutton.add(restart = new RoundedButton("restart"));
 		restart.addActionListener(this);
 		jPanelbutton.add(exit = new RoundedButton("exit"));
 		exit.addActionListener(this);
+		
 
 		jPanelscore.add("East", jPanelbutton);
 		this.add("North", jPanelscore);
@@ -96,14 +118,14 @@ public class Difference extends JFrame implements ActionListener {
 			public void run() {
 				
 				try {
-					int a = 0; 
+					
 					for (count = 0; count <= jpbar.getMaximum(); count++) {
 						count += 1;
 						jpbar.setValue(count);
 						Thread.sleep(300);
-						System.out.println(a++); 
+						System.out.println(a++);  //test
 						if(a==30) { 
-							jpbar.setForeground(Color.RED); 
+							jpbar.setForeground(Color.RED); //시간이 절반 이상 지나면 프로그레스바 색 change
 						}  
 						//다른 부분 4 곳 모두 찾으면  프로그레스바 0으로 리셋
 						if(member.isFound1()==true&&member.isFound2()==true&&
@@ -116,6 +138,8 @@ public class Difference extends JFrame implements ActionListener {
 							 if(jpbar.getValue()==jpbar.getMaximum()) {
 								 if( DifferenceDao.getDifferenceDao().clear !=1) {
 								 new GameOver();
+								 DifferenceDao.getDifferenceDao().dataAllReset();
+								 DifferenceDao.getDifferenceDao().addPoint();
 								 System.out.println("clear: "+DifferenceDao.getDifferenceDao().clear);//
 								 DifferenceDao.gameOverCheck = true; 
 								 viewDispose();
@@ -205,6 +229,10 @@ public class Difference extends JFrame implements ActionListener {
 	}
 
 	public Difference() {
+		
+		itemlist = MemberDao.selectGameItem(DifferenceDao.id, 1);	
+		timeResetCnt = (int) itemlist.get(0)[1];
+		
 		hiscore = MemberDao.selectGameScore(DifferenceDao.id, 1);
 		DifferenceDao.getDifferenceDao().imgChange();
 		this.member = DifferenceDao.member;
@@ -232,7 +260,16 @@ public class Difference extends JFrame implements ActionListener {
 		score.setText("score: " + gamescore + "점");
 
 	}
+	
+	
+	
 
+	public static int gethiScore() {
+		return hiscore; 
+		
+	
+	}
+	
 	public  void viewDispose() { 
 		//한 스테이지에서 정답을 모두 찾거나, 게임클리어 하거나, 또는 게임오버 했을때 해당 창 종료
 		if (DifferenceDao.allFoundCheck||DifferenceDao.gameClearCheck||DifferenceDao.gameOverCheck) {
@@ -241,12 +278,6 @@ public class Difference extends JFrame implements ActionListener {
 			DifferenceDao.gameClearCheck = false;
 			DifferenceDao.gameOverCheck = false;
 		}
-	}
-
-	public static int gethiScore() {
-		return hiscore; 
-		
-	
 	}
 
 	
