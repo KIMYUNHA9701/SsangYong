@@ -83,6 +83,7 @@ public class SignUpFrame extends JFrame{
 					bean.setId(id);
 					bean.setPw(pass);
 					MemberDao.addMember(bean);
+					MemberDao.addMemberItem(id);
 					new LoginFrame();
 					SignUpFrame.this.dispose();
 				}else {
