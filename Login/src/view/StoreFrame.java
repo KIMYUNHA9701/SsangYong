@@ -106,8 +106,8 @@ public class StoreFrame extends JFrame implements ActionListener {
 		this.id = id;
 		point = MemberDao.selectPoint(id);
 		itemlist = MemberDao.selectGameItem(id, 2);
-		fastcnt = (int) itemlist.get(0)[1];
-		slowcnt = (int) itemlist.get(1)[1];
+		slowcnt = (int) itemlist.get(0)[1];
+		fastcnt = (int) itemlist.get(1)[1];
 
 		init();
 		this.setBounds(100, 100, 300, 500);

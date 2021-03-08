@@ -110,8 +110,8 @@ public class Pacman extends JFrame {
 		hiscore = MemberDao.selectGameScore(id, 2);
 		point = MemberDao.selectPoint(id);
 		itemlist = MemberDao.selectGameItem(id, 2);
-		fastcnt = (int) itemlist.get(0)[1];
-		slowcnt = (int) itemlist.get(1)[1];
+		slowcnt = (int) itemlist.get(0)[1];
+		fastcnt = (int) itemlist.get(1)[1];
 		this.setLayout(new BorderLayout());
 		this.getContentPane().setBackground(Color.WHITE);
 		this.setBounds(100, 100, FrameWidth, FrameHeight);
@@ -412,8 +412,8 @@ public class Pacman extends JFrame {
 							fast = false;
 						}
 					} else {
-						// 0.3초에 한번씩
-						Thread.sleep(150);
+						// 0.1초에 한번씩
+						Thread.sleep(100);
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -484,7 +484,7 @@ public class Pacman extends JFrame {
 						}
 					} else {
 						// 0.3초에 한번씩
-						Thread.sleep(150);
+						Thread.sleep(100);
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
