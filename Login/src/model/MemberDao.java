@@ -270,15 +270,17 @@ public class MemberDao {
 	public static TableModel injectInventory(TableModel table,String id) {
 		Object[][] data = null;
 		String[] item = null;
-		String sql = "SELECT ID,ITEM,GAMENUM,COUNT FROM MEMBER_ITEM WHERE = ?";
+		String sql = "SELECT ID,ITEM,GAMENUM,COUNT FROM MEMBER_ITEM WHERE ID = ? ";
 		Connection con = Serviceutil.getInstance().getconnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ResultSetMetaData rsmd = null;
 		int r_count = 0;
 		int c_count = 0;
+		System.out.println(r_count  + " , "  + c_count);
 		try {
 			pstmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			rs.last();
 			r_count = rs.getRow();
@@ -287,6 +289,8 @@ public class MemberDao {
 			c_count = rsmd.getColumnCount();
 			data = new Object[r_count][c_count];
 			item = new String[c_count];
+			System.out.println(Arrays.deepToString(data));
+			System.out.println(Arrays.toString(item));
 			for (int i = 1; i <= c_count; i++) {
 				item[i - 1] = rsmd.getColumnName(i);
 			}
