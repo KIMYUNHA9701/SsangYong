@@ -19,8 +19,8 @@ public class StoreFrame extends JFrame implements ActionListener {
 	JPanel panel;
 	JLabel titleLabel, pointLabel;
 	ImageIcon icon;
-	String[] strBtns = { "FindDifference", "FindDifference", "Pacman - slow [20]", "Pacman - fast [20]", "2048 - back [20]",
-			"Inventory" };
+	String[] strBtns = { "FindDifference", "FindDifference", "Pacman - slow [20]", "Pacman - fast [20]",
+			"2048 - back [20]", "Inventory" };
 	RoundedButton[] buttons = new RoundedButton[strBtns.length];
 	private String id;
 	private int point;
@@ -35,25 +35,30 @@ public class StoreFrame extends JFrame implements ActionListener {
 		if (e.getSource() == buttons[0]) {
 
 		} else if (e.getSource() == buttons[1]) {
-			
+
 		} else if (e.getSource() == buttons[2]) {
+			if (point < 20)
+				return;
 			point -= 20;
 			pointLabel.setText("Point : " + point);
 			slowcnt++;
-			System.out.println("slowcnt"+slowcnt);
+			System.out.println("slowcnt" + slowcnt);
 			MemberDao.updatePoint(id, point);
 			MemberDao.updateGameItem(id, 2, "slow", slowcnt);
 		} else if (e.getSource() == buttons[3]) {
+			if (point < 20)
+				return;
 			point -= 20;
 			pointLabel.setText("Point : " + point);
 			fastcnt++;
 			MemberDao.updatePoint(id, point);
 			MemberDao.updateGameItem(id, 2, "fast", fastcnt);
 		} else if (e.getSource() == buttons[4]) {
-			if(point < 20) return;
+			if (point < 20)
+				return;
 			point -= 20;
 			pointLabel.setText("Point : " + point);
-			MemberDao.updateGameItem(id, 3, "back", (int)MemberDao.selectGameItem(id, 3).get(0)[1]+1);
+			MemberDao.updateGameItem(id, 3, "back", (int) MemberDao.selectGameItem(id, 3).get(0)[1] + 1);
 			MemberDao.updatePoint(id, point);
 		} else if (e.getSource() == buttons[5]) {
 			new InventoryFrame(id);
