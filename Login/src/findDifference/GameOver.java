@@ -69,7 +69,7 @@ public class GameOver extends JFrame implements ActionListener{
  
 	public GameOver() {
 		view();
-		this.setTitle("틀린 그림 찾기");
+		this.setTitle("다른 그림 찾기");
 		this.setSize(984, 600);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);

@@ -29,7 +29,7 @@ import javax.swing.JPanel;
 		}
 
 		public GameStart() {
-			this.setTitle("틀린 그림 찾기");
+			this.setTitle("다른 그림 찾기");
 			this.setBounds(100, 100, 984, 580);
 //			this.setLocationRelativeTo(null);
 			this.setVisible(true);

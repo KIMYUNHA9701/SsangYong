@@ -74,6 +74,44 @@ public class MemberDao {
 		}
 	}
 
+	public static void addMemberItem(String id) {
+		String[] item = { "slow", "fast", "back" };
+		int[] gamenum = { 2, 2, 3 };
+
+		for (int i = 0; i < item.length; i++) {
+			String sql2 = "INSERT INTO MEMBER_ITEM(ID,ITEM,GAMENUM,COUNT) VALUES(?,?,?,0)";
+			Connection con = Serviceutil.getInstance().getconnection();
+			PreparedStatement pstmt = null;
+			try {
+				con.setAutoCommit(false);
+				pstmt = con.prepareStatement(sql2);
+				pstmt.setString(1, id);
+				pstmt.setString(2, item[i]);
+				pstmt.setInt(3, gamenum[i]);
+				pstmt.executeUpdate();
+				con.commit();
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+				try {
+					con.rollback();
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+			} finally {
+				try {
+					if (con != null)
+						con.close();
+					if (pstmt != null)
+						pstmt.close();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+			}
+		}
+	}
+
 	public static void updateMember(String id, String pw) {
 		String sql = "UPDATE MEMBER SET PW = ? WHERE ID = ? ";
 		Connection con = Serviceutil.getInstance().getconnection();
@@ -266,8 +304,8 @@ public class MemberDao {
 			}
 		}
 	}
-	
-	public static TableModel injectInventory(TableModel table,String id) {
+
+	public static TableModel injectInventory(TableModel table, String id) {
 		Object[][] data = null;
 		String[] item = null;
 		String sql = "SELECT ID,ITEM,GAMENUM,COUNT FROM MEMBER_ITEM WHERE ID = ? ";
@@ -319,7 +357,6 @@ public class MemberDao {
 		}
 		return table;
 	}
-	
 
 	public static int selectPoint(String id) {
 		String sql = "SELECT POINT FROM MEMBER WHERE ID = ? ";
@@ -413,7 +450,7 @@ public class MemberDao {
 		}
 		return itemlist;
 	}
-	
+
 	public static void updateGameItem(String id, int order, String itemName, int count) {
 		String sql = "UPDATE MEMBER_ITEM SET COUNT = ? WHERE ID = ? AND GAMENUM=? AND ITEM = ? ";
 		Connection con = Serviceutil.getInstance().getconnection();
