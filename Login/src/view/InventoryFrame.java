@@ -16,7 +16,7 @@ public class InventoryFrame extends JFrame {
 		this.add(new JScrollPane(jTable));
 	}
 	
-	//인벤토리 프레임 아모른직다!!!
+	//가즈아
 	InventoryFrame(String id){
 		super("Inventory");
 		this.id = id;
